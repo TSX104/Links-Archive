@@ -1,0 +1,575 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أرشيف الروابط</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0a0a0f;
+  --paper: #f5f3ee;
+  --cream: #ede9df;
+  --accent: #c8372d;
+  --accent2: #1a56a0;
+  --muted: #7a7468;
+  --line: #d8d4c8;
+  --card: #faf9f6;
+  --tag-bg: #e8e4da;
+  --success: #1a6e3c;
+  --sb-width: 260px;
+  --hdr: 56px;
+  --status-h: 38px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;direction:rtl;overflow-x:hidden;}
+
+/* HEADER */
+.hdr{background:var(--ink);color:var(--paper);padding:0 20px;height:var(--hdr);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--accent);}
+.hdr-logo{display:flex;align-items:center;gap:10px;}
+.hdr-logo .ttl{font-size:1.1rem;font-weight:700;letter-spacing:-0.03em;}
+.hdr-logo .sub{font-size:0.72rem;color:#888;font-weight:300;border-right:1px solid #333;padding-right:10px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hdr-acts{display:flex;align-items:center;gap:6px;}
+.pbtn{padding:6px 14px;border-radius:50px;font-family:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .2s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.pbtn.ghost{background:transparent;border-color:#444;color:var(--paper);}
+.pbtn.ghost:hover{background:#1a1a1a;border-color:#666;}
+.pbtn.dg{background:transparent;border-color:#7a2218;color:#f87171;}
+.pbtn.dg:hover{background:#2a0e0b;}
+
+/* TOGGLE SIDEBAR BTN */
+.sb-toggle{width:36px;height:36px;background:transparent;border:1.5px solid #444;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--paper);transition:all .2s;flex-shrink:0;}
+.sb-toggle:hover{background:#1a1a1a;border-color:#666;}
+.sb-toggle svg{transition:transform .3s;}
+body.sb-hidden .sb-toggle svg{transform:scaleX(-1);}
+
+/* STATUS */
+.status{background:#fff8e7;border-bottom:1px solid #e8d88a;padding:0 20px;height:var(--status-h);font-size:0.78rem;color:#7a6010;display:flex;align-items:center;gap:8px;}
+.status.ok{background:#edfaf3;border-color:#86e5b4;color:var(--success);}
+.sdot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* LAYOUT */
+.wrap{display:flex;min-height:calc(100vh - var(--hdr) - var(--status-h));}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb-width);flex-shrink:0;background:var(--cream);border-left:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:calc(var(--hdr) + var(--status-h));height:calc(100vh - var(--hdr) - var(--status-h));overflow-y:auto;transition:width .3s cubic-bezier(.4,0,.2,1), opacity .3s, transform .3s;}
+body.sb-hidden .sidebar{width:0;opacity:0;overflow:hidden;pointer-events:none;}
+
+.sb-head{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between;}
+.sb-head-title{font-size:0.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+
+.cat-list{display:flex;flex-direction:column;gap:1px;padding:0 8px;flex:1;}
+.cat-row{display:flex;align-items:center;gap:0;border-radius:8px;overflow:hidden;transition:background .15s;}
+.cat-row:hover{background:var(--line);}
+.cat-row.active{background:var(--ink);}
+.cat-btn{flex:1;display:flex;align-items:center;justify-content:space-between;padding:9px 10px;border:none;background:transparent;font-family:inherit;font-size:0.85rem;font-weight:500;color:var(--ink);cursor:pointer;text-align:right;min-width:0;}
+.cat-row.active .cat-btn{color:white;}
+.cat-btn .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;}
+.cat-btn .cnt{font-size:0.68rem;padding:2px 6px;border-radius:50px;background:var(--tag-bg);color:var(--muted);font-weight:600;min-width:20px;text-align:center;flex-shrink:0;}
+.cat-row.active .cat-btn .cnt{background:rgba(255,255,255,.15);color:rgba(255,255,255,.8);}
+
+.cat-acts{display:flex;gap:1px;padding:4px;opacity:0;transition:opacity .15s;flex-shrink:0;}
+.cat-row:hover .cat-acts{opacity:1;}
+.cat-act{width:26px;height:26px;border:none;border-radius:5px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;}
+.cat-act:hover{background:rgba(0,0,0,.08);color:var(--ink);}
+.cat-row.active .cat-act{color:rgba(255,255,255,.6);}
+.cat-row.active .cat-act:hover{background:rgba(255,255,255,.15);color:white;}
+.cat-act.del:hover{background:#fee2e2;color:var(--accent);}
+.cat-row.active .cat-act.del:hover{background:rgba(200,55,45,.4);color:#fca5a5;}
+
+.add-cat-row{margin:6px 8px 0;padding:8px 10px;border:1.5px dashed var(--line);border-radius:8px;background:transparent;font-family:inherit;font-size:0.82rem;color:var(--muted);cursor:pointer;text-align:right;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.add-cat-row:hover{border-color:var(--accent2);color:var(--accent2);background:rgba(26,86,160,.04);}
+.add-cat-row svg{flex-shrink:0;}
+
+.sb-foot{padding:12px 16px;border-top:1px solid var(--line);font-size:0.72rem;color:var(--muted);line-height:1.6;white-space:nowrap;}
+
+/* MAIN */
+.main{flex:1;padding:24px 28px;min-width:0;transition:all .3s;}
+
+.add-card{background:white;border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:24px;box-shadow:0 1px 8px rgba(0,0,0,.04);}
+.form-lbl{font-size:0.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.frow{display:flex;gap:8px;flex-wrap:wrap;}
+.fi{flex:1;min-width:180px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:0.88rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--accent2);}
+.fi.url{flex:2;min-width:240px;}
+.fi-notes{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:0.88rem;color:var(--ink);background:var(--paper);outline:none;resize:vertical;min-height:76px;transition:border-color .2s;direction:rtl;}
+.fi-notes:focus{border-color:var(--accent2);}
+select.fi{cursor:pointer;}
+.add-btn{padding:10px 20px;background:var(--ink);color:white;border:none;border-radius:8px;font-family:inherit;font-size:0.88rem;font-weight:600;cursor:pointer;transition:background .2s;white-space:nowrap;}
+.add-btn:hover{background:#222;}
+
+.srch-wrap{position:relative;margin-bottom:18px;}
+.srch-wrap svg{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+.srch{width:100%;padding:10px 38px 10px 12px;border:1.5px solid var(--line);border-radius:9px;font-family:inherit;font-size:0.88rem;background:white;color:var(--ink);outline:none;transition:border-color .2s;}
+.srch:focus{border-color:var(--accent2);}
+
+.rmeta{font-size:0.78rem;color:var(--muted);margin-bottom:14px;}
+.rmeta strong{color:var(--ink);}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.grp-title{font-size:0.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-bottom:6px;border-bottom:1px solid var(--line);grid-column:1/-1;margin-top:10px;}
+.lcard{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 14px;display:flex;flex-direction:column;gap:9px;transition:box-shadow .2s,transform .15s;animation:slIn .22s ease;}
+@keyframes slIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.lcard:hover{box-shadow:0 3px 14px rgba(0,0,0,.07);transform:translateY(-1px);}
+.lcard-top{display:flex;align-items:center;gap:10px;}
+.fav{width:34px;height:34px;border-radius:7px;background:var(--tag-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.fav img{width:18px;height:18px;object-fit:contain;}
+.linfo{flex:1;min-width:0;}
+.ltitle{font-weight:600;font-size:0.85rem;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+.lurl{font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;display:block;}
+.lurl:hover{color:var(--accent2);}
+.lacts{display:flex;gap:3px;flex-shrink:0;}
+.ibtn{width:30px;height:30px;border:1px solid var(--line);border-radius:6px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;text-decoration:none;}
+.ibtn:hover{border-color:var(--accent2);color:var(--accent2);}
+.ibtn.del:hover{border-color:var(--accent);color:var(--accent);}
+.lnotes{font-size:0.8rem;color:#555;background:#f7f5ef;border:1px solid var(--line);border-radius:7px;padding:8px 11px;line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+.empty{grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--muted);}
+.empty .eico{font-size:2.6rem;margin-bottom:10px;opacity:.4;}
+.empty h3{font-size:.95rem;font-weight:600;margin-bottom:5px;color:var(--ink);}
+.empty p{font-size:.82rem;}
+
+/* OVERLAY (modal backdrop inline) */
+.ov{display:none;position:fixed;inset:0;background:rgba(10,10,15,.55);z-index:500;align-items:center;justify-content:center;}
+.ov.open{display:flex;}
+.mbox{background:white;border-radius:16px;padding:26px;width:400px;max-width:calc(100vw - 32px);animation:popIn .18s ease;}
+@keyframes popIn{from{transform:scale(.93);opacity:0}to{transform:scale(1);opacity:1}}
+.mbox h3{font-size:1rem;font-weight:700;margin-bottom:18px;color:var(--ink);}
+.mfi{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:0.88rem;margin-bottom:12px;outline:none;direction:rtl;color:var(--ink);background:var(--paper);}
+.mfi:focus{border-color:var(--accent2);}
+.mta{resize:vertical;min-height:90px;}
+.msel{cursor:pointer;}
+.macts{display:flex;gap:8px;justify-content:flex-end;margin-top:4px;}
+.mbtn{padding:8px 18px;border:none;border-radius:8px;font-family:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;}
+.mbtn.primary{background:var(--ink);color:white;}
+.mbtn.primary:hover{background:#222;}
+.mbtn.cancel{background:var(--tag-bg);color:var(--muted);}
+.mbtn.cancel:hover{background:var(--line);}
+
+/* DELETE CAT MODAL — special style */
+.del-modal .mbox{width:380px;}
+.del-modal .mbox h3{display:flex;align-items:center;gap:10px;}
+.del-modal .mbox h3 .ico{width:36px;height:36px;background:#fee2e2;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.del-body{font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.del-body strong{color:var(--ink);}
+.del-info{background:#fff8e7;border:1px solid #e8d88a;border-radius:8px;padding:10px 13px;font-size:.8rem;color:#7a6010;margin-bottom:16px;display:flex;align-items:flex-start;gap:8px;}
+.del-info svg{flex-shrink:0;margin-top:1px;}
+.mbtn.danger{background:#fee2e2;color:var(--accent);}
+.mbtn.danger:hover{background:#fecaca;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--ink);color:white;padding:10px 22px;border-radius:50px;font-size:.82rem;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.g{background:var(--success);}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
+@media(max-width:640px){
+  body.sb-hidden .sidebar,.sidebar{position:static;height:auto;width:100%!important;opacity:1!important;overflow:visible!important;pointer-events:auto!important;}
+  .wrap{flex-direction:column;}
+  .main{padding:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">
+    <button class="sb-toggle" onclick="toggleSidebar()" title="إظهار/إخفاء التصنيفات">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>
+      </svg>
+    </button>
+    <span class="ttl">📎 أرشيف الروابط</span>
+    <span class="sub" id="fileNameLabel">لا يوجد ملف مفتوح</span>
+  </div>
+  <div class="hdr-acts">
+    <button class="pbtn ghost" onclick="openFile()">📂 فتح</button>
+    <button class="pbtn ghost" onclick="newFile()">✨ تصدير جديد</button>
+    <button class="pbtn dg" id="exportBtn" onclick="exportFile()" style="display:none">📤 احتياطي</button>
+  </div>
+</div>
+
+<div class="status" id="statusBar">
+  <div class="sdot"></div>
+  <span id="statusMsg">لم يتم فتح أي ملف. انقر "فتح" لتحميل أرشيفك أو "جديد" للبدء.</span>
+</div>
+
+<div class="wrap">
+  <div class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <span class="sb-head-title">التصنيفات</span>
+    </div>
+    <div class="cat-list" id="catList"></div>
+    <button class="add-cat-row" onclick="openAddCatModal()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      تصنيف جديد
+    </button>
+    <div class="sb-foot" id="sbFoot">0 رابط · 0 تصنيف</div>
+  </div>
+
+  <div class="main">
+    <div class="add-card">
+      <div class="form-lbl">إضافة رابط جديد</div>
+      <div class="frow">
+        <input class="fi url" type="url" id="urlInput" placeholder="https://...">
+        <input class="fi" type="text" id="titleInput" placeholder="اسم مخصص (اختياري)">
+        <select class="fi" id="catSelect" onchange="onCatChange(this)"></select>
+      </div>
+      <div style="margin-top:8px;">
+        <textarea class="fi-notes" id="notesInput" placeholder="ملاحظات… مثلاً: وظيفة هذا الرابط، أهم النقاط، لماذا حفظته…"></textarea>
+      </div>
+      <div style="margin-top:10px;display:flex;justify-content:flex-end;">
+        <button class="add-btn" onclick="addLink()">+ إضافة</button>
+      </div>
+    </div>
+
+    <div class="srch-wrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="srch" type="text" id="searchInput" placeholder="ابحث في روابطك والملاحظات…" oninput="render()">
+    </div>
+    <div class="rmeta" id="rmeta"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<!-- MODAL: تصنيف جديد / تعديل -->
+<div class="ov" id="catModal">
+  <div class="mbox">
+    <h3 id="catModalTitle">تصنيف جديد</h3>
+    <input class="mfi" type="text" id="newCatName" placeholder="مثال: أدوات العمل، مراجع…" onkeydown="if(event.key==='Enter')confirmCatModal()">
+    <div class="macts">
+      <button class="mbtn cancel" onclick="closeCatModal()">إلغاء</button>
+      <button class="mbtn primary" onclick="confirmCatModal()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: حذف تصنيف -->
+<div class="ov del-modal" id="delCatModal">
+  <div class="mbox">
+    <h3>
+      <div class="ico">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8372d" stroke-width="2.2"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/><path d="M10,11v6M14,11v6"/><path d="M9,6V4h6v2"/></svg>
+      </div>
+      حذف التصنيف
+    </h3>
+    <div class="del-body" id="delCatBody"></div>
+    <div class="del-info" id="delCatInfo" style="display:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7a6010" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="delCatInfoTxt"></span>
+    </div>
+    <div class="macts">
+      <button class="mbtn cancel" onclick="closeDelCatModal()">إلغاء</button>
+      <button class="mbtn danger" onclick="confirmDelCat()">حذف التصنيف</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: تعديل رابط -->
+<div class="ov" id="editModal">
+  <div class="mbox" style="width:440px;">
+    <h3>تعديل الرابط</h3>
+    <input class="mfi" type="text" id="editTitle" placeholder="العنوان">
+    <input class="mfi" type="url" id="editUrl" placeholder="الرابط">
+    <select class="mfi msel" id="editCat"></select>
+    <textarea class="mfi mta" id="editNotes" placeholder="ملاحظات…"></textarea>
+    <div class="macts">
+      <button class="mbtn cancel" onclick="closeEditModal()">إلغاء</button>
+      <button class="mbtn primary" onclick="saveEdit()">حفظ التعديلات</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let state = {links:[],categories:['عام','مفضلة']};
+let fileHandle=null, activeFilter='all', saveTimer=null, editingId=null;
+let catModalMode='add', editingCatName=null, deleteCatTarget=null;
+let sidebarVisible=true;
+
+function toggleSidebar(){
+  sidebarVisible=!sidebarVisible;
+  document.body.classList.toggle('sb-hidden',!sidebarVisible);
+}
+
+async function tryAutoLoad(){
+  if(!('showOpenFilePicker' in window))return;
+  try{
+    const db=await openDB();
+    const stored=await dbGet(db,'fileHandle');
+    if(stored){
+      const perm=await stored.requestPermission({mode:'readwrite'});
+      if(perm==='granted'){fileHandle=stored;await loadFromHandle();}
+    }
+  }catch(e){}
+}
+function openDB(){return new Promise((r,j)=>{const q=indexedDB.open('LA2',1);q.onupgradeneeded=e=>e.target.result.createObjectStore('s');q.onsuccess=e=>r(e.target.result);q.onerror=j;});}
+function dbSet(db,k,v){return new Promise((r,j)=>{const t=db.transaction('s','readwrite');t.objectStore('s').put(v,k);t.oncomplete=r;t.onerror=j;});}
+function dbGet(db,k){return new Promise((r,j)=>{const t=db.transaction('s','readonly');const q=t.objectStore('s').get(k);q.onsuccess=()=>r(q.result);q.onerror=j;});}
+
+async function openFile(){
+  try{
+    [fileHandle]=await window.showOpenFilePicker({id:'la',types:[{description:'JSON',accept:{'application/json':['.json']}}],excludeAcceptAllOption:true});
+    await loadFromHandle();
+    try{const db=await openDB();await dbSet(db,'fileHandle',fileHandle);}catch(e){}
+  }catch(e){}
+}
+async function loadFromHandle(){
+  const file=await fileHandle.getFile();
+  const raw=await file.text();
+  try{
+    const d=JSON.parse(raw);
+    state.links=d.links||[];
+    state.categories=d.categories||['عام','مفضلة'];
+    setStatus('ok','✅ مفتوح: '+file.name+' — يُحفظ تلقائياً');
+    document.getElementById('fileNameLabel').textContent=file.name;
+    document.getElementById('exportBtn').style.display='flex';
+    render();buildSidebar();
+    toast('تم تحميل '+state.links.length+' رابط','g');
+  }catch(e){toast('الملف غير صالح ❌');}
+}
+async function newFile(){
+  if(state.links.length>0&&!confirm('ستفقد البيانات الحالية. متابعة؟'))return;
+  try{
+    fileHandle=await window.showSaveFilePicker({suggestedName:'links_archive.json',types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+    state={links:[],categories:['عام','مفضلة']};
+    await saveNow();
+    const file=await fileHandle.getFile();
+    setStatus('ok','✅ ملف جديد: '+file.name+' — يُحفظ تلقائياً');
+    document.getElementById('fileNameLabel').textContent=file.name;
+    document.getElementById('exportBtn').style.display='flex';
+    try{const db=await openDB();await dbSet(db,'fileHandle',fileHandle);}catch(e){}
+    render();buildSidebar();toast('تم إنشاء الملف ✅','g');
+  }catch(e){}
+}
+async function saveNow(){
+  if(!fileHandle)return;
+  try{const w=await fileHandle.createWritable();await w.write(JSON.stringify(state,null,2));await w.close();}
+  catch(e){toast('فشل الحفظ ⚠️');}
+}
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,600);}
+async function exportFile(){
+  try{
+    const h=await window.showSaveFilePicker({suggestedName:'links_backup_'+new Date().toISOString().slice(0,10)+'.json',types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+    const w=await h.createWritable();await w.write(JSON.stringify(state,null,2));await w.close();
+    toast('تم حفظ النسخة الاحتياطية ✅','g');
+  }catch(e){}
+}
+
+async function addLink(){
+  const url=document.getElementById('urlInput').value.trim();
+  if(!url){toast('أدخل رابطاً أولاً');return;}
+  if(!fileHandle){toast('افتح أو أنشئ ملفاً أولاً ⚠️');return;}
+  let title=document.getElementById('titleInput').value.trim();
+  if(!title){try{title=new URL(url).hostname.replace('www.','');}catch{title=url;}}
+  const cat=document.getElementById('catSelect').value;
+  const notes=document.getElementById('notesInput').value.trim();
+  state.links.unshift({id:Date.now(),url,title,category:cat,notes});
+  document.getElementById('urlInput').value='';
+  document.getElementById('titleInput').value='';
+  document.getElementById('notesInput').value='';
+  render();buildSidebar();autoSave();toast('تمت الإضافة ✅','g');
+}
+function deleteLink(id){
+  state.links=state.links.filter(l=>l.id!==id);
+  render();buildSidebar();autoSave();toast('تم الحذف');
+}
+function openEditModal(id){
+  const l=state.links.find(x=>x.id===id);if(!l)return;
+  editingId=id;
+  document.getElementById('editTitle').value=l.title;
+  document.getElementById('editUrl').value=l.url;
+  document.getElementById('editNotes').value=l.notes||'';
+  const sel=document.getElementById('editCat');
+  sel.innerHTML=state.categories.map(c=>`<option value="${esc(c)}"${c===l.category?' selected':''}>${esc(c)}</option>`).join('');
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('open');editingId=null;}
+function saveEdit(){
+  if(!editingId)return;
+  const l=state.links.find(x=>x.id===editingId);if(!l)return;
+  l.title=document.getElementById('editTitle').value.trim()||l.title;
+  l.url=document.getElementById('editUrl').value.trim()||l.url;
+  l.category=document.getElementById('editCat').value;
+  l.notes=document.getElementById('editNotes').value.trim();
+  closeEditModal();render();buildSidebar();autoSave();toast('تم التعديل ✅','g');
+}
+
+function onCatChange(sel){if(sel.value==='__NEW__'){openAddCatModal();sel.value=state.categories[0]||'عام';}}
+function openAddCatModal(){
+  catModalMode='add';editingCatName=null;
+  document.getElementById('catModalTitle').textContent='تصنيف جديد';
+  document.getElementById('newCatName').value='';
+  document.getElementById('catModal').classList.add('open');
+  setTimeout(()=>document.getElementById('newCatName').focus(),120);
+}
+function openEditCatModal(name){
+  catModalMode='edit';editingCatName=name;
+  document.getElementById('catModalTitle').textContent='تعديل التصنيف';
+  document.getElementById('newCatName').value=name;
+  document.getElementById('catModal').classList.add('open');
+  setTimeout(()=>document.getElementById('newCatName').focus(),120);
+}
+function closeCatModal(){document.getElementById('catModal').classList.remove('open');}
+function confirmCatModal(){
+  const name=document.getElementById('newCatName').value.trim();
+  if(!name)return;
+  if(catModalMode==='add'){
+    if(state.categories.includes(name)){toast('التصنيف موجود مسبقاً');return;}
+    state.categories.push(name);
+    closeCatModal();buildCatDropdown();
+    document.getElementById('catSelect').value=name;
+  }else{
+    if(name!==editingCatName&&state.categories.includes(name)){toast('الاسم مستخدم مسبقاً');return;}
+    const idx=state.categories.indexOf(editingCatName);
+    if(idx>-1)state.categories[idx]=name;
+    state.links.forEach(l=>{if(l.category===editingCatName)l.category=name;});
+    if(activeFilter===editingCatName)activeFilter=name;
+    closeCatModal();render();buildSidebar();toast('تم تعديل التصنيف ✅','g');
+  }
+  if(fileHandle)autoSave();
+}
+
+function openDelCatModal(name){
+  deleteCatTarget=name;
+  const count=state.links.filter(l=>l.category===name).length;
+  document.getElementById('delCatBody').innerHTML=`سيتم حذف تصنيف <strong>"${esc(name)}"</strong> بشكل نهائي.`;
+  const info=document.getElementById('delCatInfo');
+  const infoTxt=document.getElementById('delCatInfoTxt');
+  if(count>0){
+    info.style.display='flex';
+    infoTxt.textContent=`يوجد ${count} رابط في هذا التصنيف، سيتم نقلهم إلى تصنيف "عام".`;
+  }else{
+    info.style.display='none';
+  }
+  document.getElementById('delCatModal').classList.add('open');
+}
+function closeDelCatModal(){document.getElementById('delCatModal').classList.remove('open');deleteCatTarget=null;}
+function confirmDelCat(){
+  if(!deleteCatTarget)return;
+  state.links.forEach(l=>{if(l.category===deleteCatTarget)l.category='عام';});
+  state.categories=state.categories.filter(c=>c!==deleteCatTarget);
+  if(!state.categories.includes('عام'))state.categories.unshift('عام');
+  if(activeFilter===deleteCatTarget)activeFilter='all';
+  closeDelCatModal();render();buildSidebar();
+  if(fileHandle)autoSave();
+  toast('تم حذف التصنيف');
+}
+
+function buildCatDropdown(){
+  const sel=document.getElementById('catSelect');
+  const cur=sel.value;
+  sel.innerHTML=state.categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')+`<option value="__NEW__">+ تصنيف جديد</option>`;
+  if(state.categories.includes(cur))sel.value=cur;
+}
+
+function buildSidebar(){
+  buildCatDropdown();
+  const counts={};
+  state.links.forEach(l=>{counts[l.category]=(counts[l.category]||0)+1;});
+  const list=document.getElementById('catList');
+  list.innerHTML=`
+    <div class="cat-row${activeFilter==='all'?' active':''}">
+      <button class="cat-btn" onclick="setFilter('all')">
+        <span class="lbl">الكل</span>
+        <span class="cnt">${state.links.length}</span>
+      </button>
+    </div>
+    ${state.categories.map(c=>`
+      <div class="cat-row${activeFilter===c?' active':''}">
+        <button class="cat-btn" onclick="setFilter('${esc(c)}')">
+          <span class="lbl">${esc(c)}</span>
+          <span class="cnt">${counts[c]||0}</span>
+        </button>
+        <div class="cat-acts">
+          <button class="cat-act" onclick="openEditCatModal('${esc(c)}')" title="تعديل الاسم">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="cat-act del" onclick="openDelCatModal('${esc(c)}')" title="حذف التصنيف">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/><path d="M10,11v6M14,11v6"/><path d="M9,6V4h6v2"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+  document.getElementById('sbFoot').textContent=`${state.links.length} رابط · ${state.categories.length} تصنيف`;
+}
+
+function setFilter(cat){activeFilter=cat;buildSidebar();render();}
+
+function render(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const filtered=state.links.filter(l=>
+    (activeFilter==='all'||l.category===activeFilter)&&
+    (!q||l.title.toLowerCase().includes(q)||l.url.toLowerCase().includes(q)||l.category.toLowerCase().includes(q)||(l.notes||'').toLowerCase().includes(q))
+  );
+  document.getElementById('rmeta').innerHTML=filtered.length?`عرض <strong>${filtered.length}</strong> رابط${activeFilter!=='all'?' في "'+esc(activeFilter)+'"':''}` :'';
+  const grid=document.getElementById('grid');
+  if(!filtered.length){
+    grid.innerHTML=`<div class="empty"><div class="eico">🔍</div><h3>${state.links.length?'لا توجد نتائج':'لا توجد روابط بعد'}</h3><p>${state.links.length?'جرب كلمة بحث مختلفة':'أضف أول رابط من النموذج أعلاه'}</p></div>`;
+    return;
+  }
+  const grouped={};
+  filtered.forEach(l=>{(grouped[l.category]=grouped[l.category]||[]).push(l);});
+  let html='';
+  for(const cat in grouped){
+    if(activeFilter==='all')html+=`<div class="grp-title">${esc(cat)} <span style="font-weight:400;opacity:.55">(${grouped[cat].length})</span></div>`;
+    grouped[cat].forEach(l=>{
+      const domain=(()=>{try{return new URL(l.url).hostname;}catch{return '';}})();
+      const fav=domain?`https://www.google.com/s2/favicons?domain=${domain}&sz=32`:'';
+      html+=`<div class="lcard">
+        <div class="lcard-top">
+          <div class="fav">${fav?`<img src="${fav}" onerror="this.style.display='none'">`:
+            `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`}</div>
+          <div class="linfo">
+            <div class="ltitle">${esc(l.title)}</div>
+            <a href="${l.url}" target="_blank" class="lurl">${esc(domain||l.url)}</a>
+          </div>
+          <div class="lacts">
+            <a href="${l.url}" target="_blank" class="ibtn" title="فتح">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <button class="ibtn" onclick="openEditModal(${l.id})" title="تعديل">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="ibtn del" onclick="deleteLink(${l.id})" title="حذف">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/><path d="M10,11v6M14,11v6"/><path d="M9,6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+        ${l.notes?`<div class="lnotes">${esc(l.notes)}</div>`:''}
+      </div>`;
+    });
+  }
+  grid.innerHTML=html;
+}
+
+function setStatus(t,m){
+  const b=document.getElementById('statusBar');
+  b.className='status'+(t==='ok'?' ok':'');
+  document.getElementById('statusMsg').textContent=m;
+}
+let tT;
+function toast(msg,type=''){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.className='toast show'+(type?' '+type:'');
+  clearTimeout(tT);tT=setTimeout(()=>el.className='toast',2700);
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();if(fileHandle)saveNow().then(()=>toast('تم الحفظ ✅','g'));else toast('لا يوجد ملف مفتوح ⚠️');}
+  if(e.key==='Escape'){
+    document.getElementById('catModal').classList.remove('open');
+    document.getElementById('editModal').classList.remove('open');
+    document.getElementById('delCatModal').classList.remove('open');
+  }
+});
+document.getElementById('urlInput').addEventListener('keydown',e=>{if(e.key==='Enter')addLink();});
+
+buildCatDropdown();buildSidebar();render();tryAutoLoad();
+</script>
+</body>
+</html>
