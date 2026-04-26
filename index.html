@@ -21,18 +21,29 @@
   --success: #1a6e3c;
   --trial: #7c3aed;
   --trial-light: rgba(124,58,237,.08);
-  --sb-width: 256px;
+  --sb-width: 240px;
   --hdr: 62px;
   --status-h: 36px;
   --radius: 13px;
   --radius-sm: 8px;
   --shadow: 0 2px 12px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
   --shadow-md: 0 4px 24px rgba(0,0,0,.1), 0 2px 8px rgba(0,0,0,.06);
+  --offset-top: calc(var(--hdr) + var(--status-h));
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;direction:rtl;overflow-x:hidden;}
-
+html, body{height:100%;}
+body {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  direction: rtl;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 ::-webkit-scrollbar{width:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
@@ -74,7 +85,6 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color
 .auth-file-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;color:#555;margin-bottom:16px;text-align:center;background:rgba(255,255,255,.03);border:1px solid #1e1e1e;border-radius:8px;padding:8px 14px;word-break:break-all;display:none;line-height:1.5;}
 .auth-file-label.visible{display:block;}
 
-/* كارت المستخدم المكتشف */
 .detected-user-card{display:none;background:rgba(26,86,160,.08);border:1px solid rgba(26,86,160,.2);border-radius:10px;padding:10px 14px;margin-bottom:14px;animation:fadeUp .3s ease;}
 .detected-user-card.show{display:flex;align-items:center;gap:8px;}
 .detected-user-card .du-ico{font-size:1.1rem;flex-shrink:0;}
@@ -84,7 +94,6 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color
 
 .drop-zone{border:2px dashed rgba(255,255,255,.08);border-radius:var(--radius);padding:22px 20px;text-align:center;cursor:pointer;transition:all .3s cubic-bezier(.22,1,.36,1);margin-bottom:16px;position:relative;background:rgba(255,255,255,.015);}
 .drop-zone:hover,.drop-zone.drag-over{border-color:rgba(26,86,160,.5);background:rgba(26,86,160,.05);transform:scale(1.01);}
-.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .drop-icon{font-size:1.8rem;margin-bottom:8px;opacity:.45;}
 .drop-text{font-size:.8rem;color:#555;line-height:1.7;}
 .drop-text strong{color:#888;}
@@ -110,7 +119,6 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color
 .auth-btn .btn-shine{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);animation:btnShine 3s ease-in-out infinite;}
 @keyframes btnShine{0%,100%{left:-100%;}50%{left:150%;}}
 
-/* زر الرجوع */
 .auth-back-btn{width:100%;margin-top:8px;padding:10px;background:transparent;color:#444;border:1.5px solid #1a1a1a;border-radius:9px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
 .auth-back-btn:hover{border-color:#2a2a2a;color:#888;background:rgba(255,255,255,.02);}
 
@@ -128,7 +136,6 @@ body{font-family:'IBM Plex Sans Arabic',sans-serif;background:var(--paper);color
 .trial-confirm-btn{width:100%;margin-top:10px;padding:10px;background:rgba(124,58,237,.12);color:#a78bfa;border:1.5px solid rgba(124,58,237,.3);border-radius:8px;font-family:inherit;font-size:.84rem;font-weight:700;cursor:pointer;transition:all .2s;}
 .trial-confirm-btn:hover{background:rgba(124,58,237,.22);border-color:#7c3aed;}
 
-/* LOADING */
 #loadingOv{position:fixed;inset:0;background:rgba(7,7,13,.85);z-index:8000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;backdrop-filter:blur(6px);}
 #loadingOv.show{display:flex;}
 .spin{width:34px;height:34px;border:2.5px solid #1a1a2a;border-top-color:var(--accent2);border-radius:50%;animation:spin .65s linear infinite;}
@@ -161,7 +168,7 @@ body.sb-hidden .sb-toggle svg{transform:scaleX(-1);}
 .enc-badge{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;background:rgba(26,86,160,.15);color:#6ba3e8;border:1px solid rgba(26,86,160,.25);border-radius:50px;padding:3px 9px;font-weight:600;letter-spacing:.04em;}
 .trial-enc-badge{display:inline-flex;align-items:center;gap:4px;font-size:.62rem;background:rgba(124,58,237,.12);color:#a78bfa;border:1px solid rgba(124,58,237,.25);border-radius:50px;padding:3px 9px;font-weight:600;letter-spacing:.04em;}
 
-/* STATUS BAR */
+/* FIX 1: إصلاح CSS الـ status المكسور */
 .status{background:#fff8e7;border-bottom:1px solid #e8d88a;padding:0 22px;height:var(--status-h);font-size:.76rem;color:#7a6010;display:flex;align-items:center;gap:8px;transition:all .3s;}
 .status.ok{background:#edfaf3;border-color:#86e5b4;color:var(--success);}
 .status.trial{background:rgba(124,58,237,.06);border-color:rgba(124,58,237,.2);color:#7c3aed;}
@@ -178,58 +185,46 @@ body.sb-hidden .sb-toggle svg{transform:scaleX(-1);}
 /* ===================== LAYOUT ===================== */
 .wrap {
   display: flex;
-  min-height: calc(100vh - var(--offset-top));
-  position: relative;
-  /* لضمان عدم حدوث مشاكل في المحاذاة مع العناصر العائمة */
-  align-items: stretch; 
+  align-items: flex-start;
+  background: var(--paper);
+  gap: 0;
+  height: calc(100vh - var(--offset-top));
+  overflow: hidden;
 }
 
 .sidebar {
   width: var(--sb-width);
+  min-width: var(--sb-width);
   flex-shrink: 0;
-  background-color: var(--cream);
+  background: var(--cream);
   border-left: 1px solid var(--line);
-  
-  /* جعل التمركز Sticky أكثر ذكاءً */
-  position: sticky;
-  top: var(--offset-top);
-  height: calc(100vh - var(--offset-top));
-  
-  /* تحسين التمرير الداخلي */
+  position: relative;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  overflow-x: hidden;
-  
-  /* منع تمرير الصفحة الخلفية عند الوصول لنهاية قائمة السايدبار */
-  overscroll-behavior: contain; 
-  
-  /* تحسين الأداء أثناء الانتقالات */
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
-              opacity 0.2s ease;
-  will-change: width;
+  z-index: 10;
+  transition: width .25s, min-width .25s, opacity .25s;
 }
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:10px;}
+.sidebar::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.2);}
+body.sb-hidden .sidebar{width:0;min-width:0;opacity:0;overflow:hidden;pointer-events:none;}
 
-/* تحسين شكل شريط التمرير (Scrollbar) ليعطي طابع احترافي */
-.sidebar::-webkit-scrollbar {
-  width: 5px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
-}
-body.sb-hidden .sidebar{width:0;opacity:0;overflow:hidden;pointer-events:none;}
-.sb-head{padding:18px 14px 10px;display:flex;align-items:center;justify-content:space-between;}
+.sb-head{padding:18px 14px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .sb-head-title{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
 .cat-list{display:flex;flex-direction:column;gap:1px;padding:0 7px;flex:1;}
 .cat-row{display:flex;align-items:center;border-radius:9px;overflow:hidden;transition:background .15s;}
 .cat-row:hover{background:var(--line);}
 .cat-row.active{background:var(--ink);}
+
+.cat-row.trash-row{margin-top:4px;}
+.cat-row.trash-row .cat-btn{color:var(--accent);}
+.cat-row.trash-row.active{background:var(--accent);}
+.cat-row.trash-row.active .cat-btn{color:white;}
+.cat-row.trash-row .cat-btn .cnt{background:rgba(200,55,45,.12);color:var(--accent);}
+.cat-row.trash-row.active .cat-btn .cnt{background:rgba(255,255,255,.2);color:white;}
+
 .cat-btn{flex:1;display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border:none;background:transparent;font-family:inherit;font-size:.83rem;font-weight:500;color:var(--ink);cursor:pointer;text-align:right;min-width:0;gap:8px;position:relative;z-index:1;}
 .cat-row.active .cat-btn{color:white;}
 .cat-btn .lbl{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;}
@@ -243,12 +238,19 @@ body.sb-hidden .sidebar{width:0;opacity:0;overflow:hidden;pointer-events:none;}
 .cat-row.active .cat-act:hover{background:rgba(255,255,255,.12);color:white;}
 .cat-act.del:hover{background:#fee2e2;color:var(--accent);}
 .cat-row.active .cat-act.del:hover{background:rgba(200,55,45,.35);color:#fca5a5;}
-.add-cat-row{margin:6px 7px;padding:9px 11px;border:1.5px dashed var(--line);border-radius:9px;background:transparent;font-family:inherit;font-size:.8rem;color:var(--muted);cursor:pointer;text-align:right;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.add-cat-row{margin:6px 7px;padding:9px 11px;border:1.5px dashed var(--line);border-radius:9px;background:transparent;font-family:inherit;font-size:.8rem;color:var(--muted);cursor:pointer;text-align:right;transition:all .15s;display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .add-cat-row:hover{border-color:var(--accent2);color:var(--accent2);background:var(--accent2-light);}
-.sb-foot{padding:12px 16px;border-top:1px solid var(--line);font-size:.7rem;color:var(--muted);line-height:1.6;}
+.sb-foot{padding:12px 16px;border-top:1px solid var(--line);font-size:.7rem;color:var(--muted);line-height:1.6;flex-shrink:0;}
+.sb-sep{height:1px;background:var(--line);margin:4px 14px;flex-shrink:0;}
 
 /* ===================== MAIN ===================== */
-.main{flex:1;padding:26px 30px;min-width:0;}
+.main {
+  flex: 1;
+  padding: 26px 30px;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+}
 .add-card{background:white;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;margin-bottom:22px;box-shadow:var(--shadow);transition:box-shadow .2s;}
 .add-card:focus-within{box-shadow:var(--shadow-md);}
 .form-lbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
@@ -262,6 +264,25 @@ select.fi{cursor:pointer;}
 .add-btn{padding:10px 22px;background:var(--ink);color:white;border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:.86rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .add-btn:hover{background:#1e1e24;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
 .add-btn:active{transform:translateY(0);}
+.add-btn:disabled{background:#ccc;color:#888;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* Multi-category selector */
+.multi-cat-wrap{position:relative;flex:1;min-width:200px;}
+.multi-cat-display{padding:10px 13px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:.86rem;color:var(--ink);background:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:border-color .2s, box-shadow .2s;user-select:none;min-height:41px;}
+.multi-cat-display:hover,.multi-cat-display.open{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(26,86,160,.08);}
+.multi-cat-display .tags-row{display:flex;flex-wrap:wrap;gap:4px;flex:1;}
+.multi-cat-tag{font-size:.7rem;padding:2px 8px;border-radius:4px;background:var(--accent2-light);color:var(--accent2);border:1px solid rgba(26,86,160,.2);font-weight:600;}
+.multi-cat-placeholder{color:var(--muted);font-size:.86rem;}
+.multi-cat-arrow{color:var(--muted);flex-shrink:0;transition:transform .2s;}
+.multi-cat-display.open .multi-cat-arrow{transform:rotate(180deg);}
+.multi-cat-dropdown{position:absolute;top:calc(100% + 4px);right:0;left:0;background:white;border:1.5px solid var(--line);border-radius:var(--radius-sm);box-shadow:var(--shadow-md);z-index:100;padding:4px;max-height:200px;overflow-y:auto;display:none;}
+.multi-cat-dropdown.open{display:block;animation:popIn .15s ease;}
+.multi-cat-opt{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:.83rem;transition:background .12s;}
+.multi-cat-opt:hover{background:var(--paper);}
+.multi-cat-opt input[type=checkbox]{accent-color:var(--accent2);width:14px;height:14px;cursor:pointer;flex-shrink:0;}
+.multi-cat-opt .opt-lbl{flex:1;color:var(--ink);}
+.multi-cat-add{display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:.8rem;color:var(--accent2);font-weight:600;border-top:1px solid var(--line);margin-top:2px;}
+.multi-cat-add:hover{background:var(--accent2-light);}
 
 .srch-wrap{position:relative;margin-bottom:16px;}
 .srch-wrap svg{position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
@@ -277,6 +298,7 @@ select.fi{cursor:pointer;}
 .lcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 15px;display:flex;flex-direction:column;gap:10px;transition:box-shadow .2s, transform .15s, border-color .2s;animation:slIn .22s ease;}
 @keyframes slIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .lcard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:#ccc;}
+.lcard.trash-card{opacity:.75;border-style:dashed;}
 .lcard-top{display:flex;align-items:center;gap:11px;}
 .fav{width:36px;height:36px;border-radius:9px;background:var(--tag-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
 .fav img{width:18px;height:18px;object-fit:contain;}
@@ -285,10 +307,23 @@ select.fi{cursor:pointer;}
 .lurl{font-size:.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;display:block;transition:color .15s;}
 .lurl:hover{color:var(--accent2);}
 .lacts{display:flex;gap:3px;flex-shrink:0;}
-.ibtn{width:30px;height:30px;border:1px solid var(--line);border-radius:7px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15px;text-decoration:none;}
+.ibtn{width:30px;height:30px;border:1px solid var(--line);border-radius:7px;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .15s;text-decoration:none;}
 .ibtn:hover{border-color:var(--accent2);color:var(--accent2);background:var(--accent2-light);}
 .ibtn.del:hover{border-color:var(--accent);color:var(--accent);background:#fff0ef;}
+.ibtn.restore-btn:hover{border-color:var(--success);color:var(--success);background:#edfaf3;}
 .lnotes{font-size:.78rem;color:#555;background:#f7f5ef;border:1px solid var(--line);border-radius:7px;padding:9px 12px;line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.lcats{display:flex;flex-wrap:wrap;gap:4px;}
+.lcat-tag{font-size:.66rem;padding:2px 8px;border-radius:4px;background:var(--accent2-light);color:var(--accent2);border:1px solid rgba(26,86,160,.15);font-weight:600;}
+
+/* Trash toolbar */
+.trash-toolbar{display:none;background:rgba(200,55,45,.05);border:1px solid rgba(200,55,45,.2);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;gap:8px;align-items:center;flex-wrap:wrap;}
+.trash-toolbar.show{display:flex;}
+.trash-toolbar .tb-title{font-size:.8rem;color:var(--accent);font-weight:600;flex:1;}
+.trash-tbtn{padding:7px 14px;border-radius:7px;font-family:inherit;font-size:.77rem;font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s;}
+.trash-tbtn.restore-all{border-color:rgba(26,112,60,.3);color:var(--success);background:rgba(26,112,60,.06);}
+.trash-tbtn.restore-all:hover{background:rgba(26,112,60,.12);}
+.trash-tbtn.del-all{border-color:rgba(200,55,45,.3);color:var(--accent);background:rgba(200,55,45,.06);}
+.trash-tbtn.del-all:hover{background:rgba(200,55,45,.14);}
 
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
 .empty .eico{font-size:2.8rem;margin-bottom:12px;opacity:.35;}
@@ -306,8 +341,8 @@ select.fi{cursor:pointer;}
 .msel{cursor:pointer;}
 .macts{display:flex;gap:8px;justify-content:flex-end;margin-top:6px;}
 .mbtn{padding:9px 20px;border:none;border-radius:9px;font-family:inherit;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .15s;}
-.mbtn.primary{background:var(--ink);color:white;}
-.mbtn.primary:hover{background:#1e1e24;}
+.mbtn.primary{background:#222;color:white;}
+.mbtn.primary:hover{background:#454545;}
 .mbtn.cancel{background:var(--tag-bg);color:var(--muted);}
 .mbtn.cancel:hover{background:var(--line);}
 .del-modal .mbox h3{display:flex;align-items:center;gap:10px;}
@@ -320,12 +355,13 @@ select.fi{cursor:pointer;}
 .mbtn.danger:hover{background:#fecaca;}
 
 /* SETTINGS */
-.settings-modal .mbox{width:440px;}
+.settings-modal .mbox{width:460px;}
 .settings-modal .mbox h3{display:flex;align-items:center;gap:10px;font-size:1rem;margin-bottom:22px;}
 .settings-modal .mbox h3 .ico{width:36px;height:36px;background:var(--tag-bg);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .sett-section{margin-bottom:22px;}
 .sett-section:last-child{margin-bottom:0;}
-.sett-section-title{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);}
+/* FIX 2: إصلاح sett-section-title — كانت تنقصها خاصية closing لـ padding/border */
+.sett-section-title{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line);display:block;}
 .sett-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0ede6;}
 .sett-row:last-child{border-bottom:none;}
 .sett-info{flex:1;}
@@ -338,9 +374,42 @@ select.fi{cursor:pointer;}
 .toggle-track::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;right:3px;top:3px;transition:right .2s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 .toggle input:checked + .toggle-track::after{right:calc(100% - 19px);}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--ink);color:white;padding:10px 22px;border-radius:50px;font-size:.8rem;font-weight:500;z-index:9999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.2);}
-.toast.show{transform:translateX(-50%) translateY(0);}
+/* Change credentials in settings */
+.change-creds-section{background:var(--paper);border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:14px;margin-top:10px;}
+.change-creds-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+.change-creds-fi{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;font-family:inherit;font-size:.83rem;color:var(--ink);background:white;outline:none;margin-bottom:8px;direction:rtl;transition:border-color .2s;}
+.change-creds-fi:last-of-type{margin-bottom:0;}
+.change-creds-fi:focus{border-color:var(--accent2);}
+.change-creds-fi::placeholder{color:var(--muted);}
+.change-creds-btn{padding:9px 18px;background:black;color:white;border:none;border-radius:8px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;margin-top:8px;}
+.change-creds-btn:hover{background:#212121;}
+.creds-msg{font-size:.75rem;margin-top:6px;padding:6px 10px;border-radius:6px;display:none;}
+.creds-msg.ok{display:block;background:#edfaf3;color:var(--success);border:1px solid #86e5b4;}
+.creds-msg.err{display:block;background:#fff0ef;color:var(--accent);border:1px solid #f8a0a0;}
+
+/* FIX 3: إصلاح الـ toast — كانت مفتوحة بدون closing brace */
+.toast{
+  position:fixed;
+  top:80px;
+  left:50%;
+  transform:translateX(-50%) translateY(-70px);
+  background:#222;
+  color:white;
+  padding:10px 20px;
+  border-radius:50px;
+  font-size:.82rem;
+  font-weight:600;
+  z-index:9999;
+  opacity:0;
+  transition:transform .3s cubic-bezier(.22,1,.36,1), opacity .3s;
+  pointer-events:none;
+  white-space:nowrap;
+  box-shadow:0 4px 20px rgba(0,0,0,.25);
+}
+.toast.show{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+}
 .toast.g{background:var(--success);color:white;}
 .toast.t{background:var(--trial);color:white;}
 
@@ -349,9 +418,14 @@ body.dark{--ink:#f0ede6;--paper:#0f0f12;--cream:#161619;--muted:#666;--line:#222
 body.dark .add-card{background:#1a1a1d;border-color:#222;}
 body.dark .fi, body.dark .fi-notes, body.dark .srch{background:#111;border-color:#222;color:#f0ede6;}
 body.dark .fi::placeholder,body.dark .fi-notes::placeholder,body.dark .srch::placeholder{color:#444;}
+body.dark .multi-cat-display{background:#111;border-color:#222;color:#f0ede6;}
+body.dark .multi-cat-dropdown{background:#1a1a1d;border-color:#2a2a2a;}
+body.dark .multi-cat-opt:hover{background:#111;}
+body.dark .multi-cat-add{border-color:#2a2a2a;}
 body.dark .ibtn{background:#1a1a1d;border-color:#222;color:#666;}
 body.dark .ibtn:hover{background:#222;color:var(--accent2);}
 body.dark .ibtn.del:hover{background:#2a0e0b;color:#f87171;}
+body.dark .ibtn.restore-btn:hover{background:#001a0e;color:#4a9a6a;}
 body.dark .lnotes{background:#111;border-color:#222;color:#999;}
 body.dark .mbox{background:#1a1a1d;border:1px solid #2a2a2a;}
 body.dark .mbox h3{color:#f0ede6;}
@@ -366,6 +440,7 @@ body.dark .hdr{background:#0d0d12;border-bottom-color:var(--accent);}
 body.dark .hdr.trial-mode{border-bottom-color:var(--trial);}
 body.dark .cat-row:hover{background:#1a1a1d;}
 body.dark .cat-row.active{background:#2a2a2a;}
+body.dark .cat-row.trash-row.active{background:rgba(200,55,45,.4);}
 body.dark .cat-act{color:#555;}
 body.dark .cat-act:hover{background:rgba(255,255,255,.05);color:#bbb;}
 body.dark .add-cat-row:hover{background:var(--accent2-light);border-color:var(--accent2);color:var(--accent2);}
@@ -374,8 +449,9 @@ body.dark .add-btn:hover{background:#333;}
 body.dark .fav{background:#1a1a1d;border:1px solid #222;}
 body.dark .grp-title{color:#555;border-color:#1a1a1a;}
 body.dark .grp-title::after{background:#1a1a1a;}
-body.dark .sb-head-title,.sb-foot{color:#555;}
-body.dark .sb-foot{border-color:#1a1a1a;}
+body.dark .sb-head-title{color:#555;}
+body.dark .sb-foot{color:#555;border-color:#1a1a1a;}
+body.dark .sb-sep{background:#1a1a1a;}
 body.dark .rmeta{color:#555;}
 body.dark .rmeta strong{color:#888;}
 body.dark .trial-app-warn{background:rgba(124,58,237,.07);border-color:rgba(124,58,237,.2);}
@@ -385,7 +461,14 @@ body.dark .add-btn:disabled{background:#222;color:#555;cursor:not-allowed;}
 body.dark .lcard{background:#1a1a1d;border-color:#222;}
 body.dark .ltitle{color:#e8e4da;}
 body.dark .lurl{color:#555;}
-.add-btn:disabled{background:#ccc;color:#888;cursor:not-allowed;transform:none;box-shadow:none;}
+body.dark .change-creds-section{background:#111;border-color:#2a2a2a;}
+body.dark .change-creds-fi{background:#0a0a0f;border-color:#222;color:#f0ede6;}
+body.dark .change-creds-fi::placeholder{color:#444;}
+body.dark .trash-toolbar{background:rgba(200,55,45,.08);border-color:rgba(200,55,45,.25);}
+body.dark .mbtn.primary{background:#222;color:#ccc;}
+body.dark .mbtn.primary:hover{background:#2a2a2a;}
+body.dark .srch{background:#111;}
+body.dark .lcard:hover{border-color:#333;}
 </style>
 </head>
 <body>
@@ -399,7 +482,6 @@ body.dark .lurl{color:#555;}
   </div>
   <div class="auth-grid"></div>
   <div class="auth-particles" id="authParticles"></div>
-
   <div class="auth-wrap">
     <div class="auth-logo-area">
       <div class="auth-logo-ring">
@@ -408,38 +490,29 @@ body.dark .lurl{color:#555;}
       <div class="auth-logo-text">أرشيف الروابط</div>
       <div class="auth-logo-sub">كل ملف هو حساب مستقل · مشفر بالكامل</div>
     </div>
-
     <div class="auth-box">
-
-      <!-- شاشة اختيار الملف (افتراضية) -->
       <div id="filePickStep">
-        <!-- منطقة السحب والإفلات — الأساسية هي زر الفتح الذي يعطي handle كامل -->
         <div class="drop-zone" id="dropZone">
           <div class="drop-icon">📂</div>
           <div class="drop-text"><strong>اسحب ملف (json.) هنا</strong><br>أو انقر للإختيار</div>
         </div>
-
         <div class="trial-banner" id="trialBanner">
           <div class="trial-banner-title">وضع الضيف</div>
           <div class="trial-banner-body">
-            ستتمكن من تصفح التطبيق وإضافة روابط مؤقتاً،
+            ستتمكن من تصفح الموقع وإضافة روابط مؤقتاً،
             لكن <strong>لن يتم حفظ أي شيء</strong> عند إغلاق الصفحة أو تحديثها.<br><br>
             لحفظ بياناتك أنشئ ملف JSON أو افتح ملفاً موجوداً.
           </div>
-          <button class="trial-confirm-btn" onclick="enterTrialMode()">حسناً، ابدأ الضيف</button>
+          <button class="trial-confirm-btn" onclick="enterTrialMode()">حسناً</button>
+          <button class="auth-back-btn" onclick="goBackToFilePick()">العودة ←</button>
         </div>
-
         <div class="auth-actions" id="authActions">
           <button class="auth-new-btn" onclick="createNewFile()">✨ ملف جديد</button>
           <button class="auth-trial-btn" onclick="showTrialWarning()">ضيف</button>
         </div>
       </div>
-
-      <!-- شاشة تسجيل الدخول (بعد اختيار الملف) -->
       <div id="loginStep" style="display:none">
         <div class="auth-file-label visible" id="authFileLabel">—</div>
-
-        <!-- كارت المستخدم المكتشف تلقائياً -->
         <div class="detected-user-card" id="detectedUserCard">
           <div class="du-ico">👤</div>
           <div class="du-txt">
@@ -447,7 +520,6 @@ body.dark .lurl{color:#555;}
             <div class="du-name" id="detectedUserName">—</div>
           </div>
         </div>
-
         <div class="auth-err" id="authErr"></div>
         <div class="auth-fi-wrap" id="userWrap">
           <input class="auth-fi" type="text" id="authUser" placeholder="اسم المستخدم" autocomplete="off">
@@ -461,15 +533,11 @@ body.dark .lurl{color:#555;}
           <input class="auth-fi" type="password" id="authPassConfirm" placeholder="تأكيد كلمة المرور" autocomplete="off" onkeydown="if(event.key==='Enter')doAuth()">
           <button class="pass-toggle" type="button" onclick="togglePassVis('authPassConfirm',this)" tabindex="-1">👁</button>
         </div>
-
         <button class="auth-btn" id="authSubmitBtn" onclick="doAuth()">
           <span class="btn-shine"></span>دخول
         </button>
-        <button class="auth-back-btn" onclick="goBackToFilePick()">
-           العودة ←
-        </button>
+        <button class="auth-back-btn" onclick="goBackToFilePick()">العودة ←</button>
       </div>
-
     </div>
   </div>
 </div>
@@ -507,7 +575,7 @@ body.dark .lurl{color:#555;}
     </button>
     <button class="pbtn logout" onclick="logout()">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      <span>تسجيل خروج</span>
+      <span>تسجيل الخروج</span>
     </button>
   </div>
 </div>
@@ -527,6 +595,7 @@ body.dark .lurl{color:#555;}
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       تصنيف جديد
     </button>
+    <div class="sb-sep"></div>
     <div class="sb-foot" id="sbFoot">0 رابط · 0 تصنيف</div>
   </div>
 
@@ -534,16 +603,22 @@ body.dark .lurl{color:#555;}
     <div class="trial-app-warn" id="trialAppWarn" style="display:none">
       <div class="warn-txt">
         <div class="warn-title">وضع الضيف — البيانات مؤقتة</div>
-        <div class="warn-body">أنت تستخدم التطبيق بدون ملف حفظ. <strong>ستُفقد جميع الروابط عند إغلاق الصفحة أو تحديثها.</strong> لحفظ بياناتك، سجّل الخروج وأنشئ ملف JSON.</div>
+        <div class="warn-body">أنت تستخدم الموقع بدون ملف حفظ. <strong>ستُفقد جميع الروابط عند إغلاق الصفحة أو تحديثها.</strong></div>
       </div>
     </div>
 
-    <div class="add-card">
+    <div class="add-card" id="addCard">
       <div class="form-lbl">إضافة رابط جديد</div>
       <div class="frow">
         <input class="fi url" type="url" id="urlInput" placeholder="https://...">
         <input class="fi" type="text" id="titleInput" placeholder="اسم مخصص (اختياري)">
-        <select class="fi" id="catSelect" onchange="onCatChange(this)"></select>
+        <div class="multi-cat-wrap" id="multiCatWrap">
+          <div class="multi-cat-display" id="multiCatDisplay" onclick="toggleMultiCatDropdown()">
+            <div class="tags-row" id="multiCatTags"><span class="multi-cat-placeholder">اختر تصنيفاً…</span></div>
+            <svg class="multi-cat-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+          </div>
+          <div class="multi-cat-dropdown" id="multiCatDropdown"></div>
+        </div>
       </div>
       <div style="margin-top:8px;">
         <textarea class="fi-notes" id="notesInput" placeholder="ملاحظات…"></textarea>
@@ -554,6 +629,13 @@ body.dark .lurl{color:#555;}
           إضافة
         </button>
       </div>
+    </div>
+
+    <!-- Trash toolbar -->
+    <div class="trash-toolbar" id="trashToolbar">
+      <span class="tb-title">🗑️ سلة المهملات</span>
+      <button class="trash-tbtn restore-all" onclick="restoreAllTrash()">↩ استعادة الكل</button>
+      <button class="trash-tbtn del-all" onclick="deleteAllTrash()">🗑 حذف الكل نهائياً</button>
     </div>
 
     <div class="srch-wrap">
@@ -596,13 +678,19 @@ body.dark .lurl{color:#555;}
   </div>
 </div>
 
-<!-- MODAL: تعديل رابط -->
+<!-- MODAL: تعديل رابط (multi-cat) -->
 <div class="ov" id="editModal">
-  <div class="mbox" style="width:440px;">
+  <div class="mbox" style="width:460px;">
     <h3>تعديل الرابط</h3>
     <input class="mfi" type="text" id="editTitle" placeholder="العنوان">
     <input class="mfi" type="url" id="editUrl" placeholder="الرابط">
-    <select class="mfi msel" id="editCat"></select>
+    <div class="multi-cat-wrap" id="editMultiCatWrap" style="margin-bottom:11px;">
+      <div class="multi-cat-display" id="editMultiCatDisplay" onclick="toggleEditMultiCatDropdown()">
+        <div class="tags-row" id="editMultiCatTags"><span class="multi-cat-placeholder">اختر تصنيفاً…</span></div>
+        <svg class="multi-cat-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+      </div>
+      <div class="multi-cat-dropdown" id="editMultiCatDropdown"></div>
+    </div>
     <textarea class="mfi mta" id="editNotes" placeholder="ملاحظات…"></textarea>
     <div class="macts">
       <button class="mbtn cancel" onclick="closeEditModal()">إلغاء</button>
@@ -611,7 +699,7 @@ body.dark .lurl{color:#555;}
   </div>
 </div>
 
-<!-- MODAL: الإعدادات -->
+<!-- FIX 4: إصلاح modal الإعدادات — كان فيه div مفتوح بدون إغلاق في saveSectionWrap -->
 <div class="ov settings-modal" id="settingsModal">
   <div class="mbox">
     <h3>
@@ -630,7 +718,7 @@ body.dark .lurl{color:#555;}
         <label class="toggle"><input type="checkbox" id="s-dark" onchange="applySetting('dark', this.checked)"><div class="toggle-track"></div></label>
       </div>
     </div>
-    <div class="sett-section">
+    <div class="sett-section" id="saveSectionWrap">
       <div class="sett-section-title">الحفظ</div>
       <div class="sett-row">
         <div class="sett-info">
@@ -638,6 +726,18 @@ body.dark .lurl{color:#555;}
           <div class="sett-desc">يحفظ كل تغيير فوراً في الملف</div>
         </div>
         <label class="toggle"><input type="checkbox" id="s-autosave" onchange="applySetting('autosave', this.checked)" checked><div class="toggle-track"></div></label>
+      </div>
+    </div>
+    <div class="sett-section" id="credsSectionWrap">
+      <div class="sett-section-title">بيانات الحساب</div>
+      <div class="change-creds-section">
+        <div class="change-creds-title">تغيير اسم المستخدم أو كلمة المرور</div>
+        <input class="change-creds-fi" type="password" id="credsOldPass" placeholder="كلمة المرور الحالية">
+        <input class="change-creds-fi" type="text" id="credsNewUser" placeholder="اسم المستخدم الجديد (اتركه فارغاً للإبقاء على الحالي)">
+        <input class="change-creds-fi" type="password" id="credsNewPass" placeholder="كلمة المرور الجديدة (اتركها فارغة للإبقاء على الحالية)">
+        <input class="change-creds-fi" type="password" id="credsNewPassConfirm" placeholder="تأكيد كلمة المرور الجديدة">
+        <button class="change-creds-btn" onclick="changeCredentials()">حفظ التغييرات</button>
+        <div class="creds-msg" id="credsMsg"></div>
       </div>
     </div>
     <div class="macts" style="margin-top:8px;">
@@ -663,7 +763,6 @@ body.dark .lurl{color:#555;}
   }
 })();
 
-// ===================== PASSWORD VISIBILITY =====================
 function togglePassVis(inputId, btn) {
   const inp = document.getElementById(inputId);
   if (!inp) return;
@@ -715,24 +814,26 @@ async function hashPassword(password, saltHex) {
 }
 
 // ===================== STATE =====================
-// كل الحالة في الذاكرة فقط — لا شيء في المتصفح
-let state = { links: [], categories: ['عام', 'مفضلة'] };
-let fileHandle = null;        // FileSystemFileHandle إذا فُتح بـ showOpenFilePicker
+let state = { links: [], categories: ['عام', 'مفضلة'], trash: [] };
+let fileHandle = null;
 let activeFilter = 'all';
 let saveTimer = null;
 let editingId = null;
 let catModalMode = 'add';
 let editingCatName = null;
 let deleteCatTarget = null;
-let sessionPassword = null;   // في الذاكرة فقط
-let currentAuth = null;       // في الذاكرة فقط
+let sessionPassword = null;
+let currentAuth = null;
 let pendingFileHandle = null;
 let pendingRawText = null;
 let isTrialMode = false;
-let isReadOnly = false;       // صحيح فقط عند السحب والإفلات بدون handle
+let isReadOnly = false;
 let userSettings = { dark: false, autosave: true };
 
-// ===================== SETTINGS (localStorage للإعدادات البصرية فقط) =====================
+let selectedAddCats = [];
+let editSelectedCats = [];
+
+// ===================== SETTINGS =====================
 function loadSettings() {
   try {
     const s = JSON.parse(localStorage.getItem('la_ui_settings') || '{}');
@@ -743,7 +844,6 @@ function loadSettings() {
 }
 
 function saveSettings() {
-  // نحفظ فقط الإعدادات البصرية (dark mode, autosave) — لا بيانات ملفات أو حسابات
   localStorage.setItem('la_ui_settings', JSON.stringify({
     dark: userSettings.dark,
     autosave: userSettings.autosave
@@ -767,34 +867,182 @@ function syncSettingsUI() {
   if (el_auto) el_auto.checked = userSettings.autosave !== false;
 }
 
-function openSettingsModal() { syncSettingsUI(); document.getElementById('settingsModal').classList.add('open'); }
+function openSettingsModal() {
+  syncSettingsUI();
+  document.getElementById('credsSectionWrap').style.display = isTrialMode ? 'none' : 'block';
+  document.getElementById('saveSectionWrap').style.display = isTrialMode ? 'none' : 'block';
+  // مسح حقول كلمة المرور عند كل فتح
+  ['credsOldPass','credsNewUser','credsNewPass','credsNewPassConfirm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const msg = document.getElementById('credsMsg');
+  if (msg) msg.className = 'creds-msg';
+  document.getElementById('settingsModal').classList.add('open');
+}
 function closeSettingsModal() { document.getElementById('settingsModal').classList.remove('open'); }
 
+// ===================== CHANGE CREDENTIALS =====================
+async function changeCredentials() {
+  if (isTrialMode) { showCredsMsg('وضع الضيف — لا يمكن تغيير البيانات', 'err'); return; }
+  if (!currentAuth || !sessionPassword || !fileHandle) {
+    showCredsMsg('لا توجد جلسة نشطة أو ملف مفتوح', 'err'); return;
+  }
+
+  const oldPass = document.getElementById('credsOldPass').value;
+  const newUser = (document.getElementById('credsNewUser').value || '').trim();
+  const newPass = document.getElementById('credsNewPass').value;
+  const newPassConfirm = document.getElementById('credsNewPassConfirm').value;
+
+  if (!oldPass) { showCredsMsg('أدخل كلمة المرور الحالية', 'err'); return; }
+
+  const { hash: oldHash } = await hashPassword(oldPass, currentAuth.salt);
+  if (oldHash !== currentAuth.hash) {
+    showCredsMsg('كلمة المرور الحالية غير صحيحة ❌', 'err'); return;
+  }
+
+  if (newPass && newPass !== newPassConfirm) {
+    showCredsMsg('كلمتا المرور الجديدتان غير متطابقتين', 'err'); return;
+  }
+  if (newPass && newPass.length < 6) {
+    showCredsMsg('كلمة المرور الجديدة 6 أحرف على الأقل', 'err'); return;
+  }
+
+  const finalUser = newUser || currentAuth.username;
+  const finalPass = newPass || oldPass;
+
+  showLoading('جاري تحديث البيانات وإعادة التشفير…');
+  try {
+    const { hash, salt } = await hashPassword(finalPass);
+    currentAuth = { username: finalUser, hash, salt };
+    sessionPassword = finalPass;
+
+    await writeEncryptedFile();
+    document.getElementById('fileNameLabel').textContent =
+      (fileHandle ? fileHandle.name : 'ملف') + ' · ' + finalUser;
+
+    hideLoading();
+    showCredsMsg('تم تحديث البيانات بنجاح ✅', 'ok');
+    toast('تم تحديث بيانات الحساب ✅', 'g');
+  } catch(e) {
+    hideLoading();
+    showCredsMsg('فشل الحفظ: ' + (e.message || e), 'err');
+  }
+}
+
+function showCredsMsg(msg, type) {
+  const el = document.getElementById('credsMsg');
+  el.textContent = msg;
+  el.className = 'creds-msg ' + type;
+}
+
+// ===================== MULTI-CAT DROPDOWN =====================
+function buildMultiCatDropdown(dropdownId, selectedArr, onChangeFn) {
+  const dd = document.getElementById(dropdownId);
+  dd.innerHTML = '';
+  state.categories.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'multi-cat-opt';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = c;
+    cb.checked = selectedArr.includes(c);
+    cb.addEventListener('click', (e) => e.stopPropagation());
+
+    div.addEventListener('click', () => {
+      cb.checked = !cb.checked;
+      if (cb.checked) {
+        if (!selectedArr.includes(c)) selectedArr.push(c);
+      } else {
+        const i = selectedArr.indexOf(c);
+        if (i > -1) selectedArr.splice(i, 1);
+      }
+      onChangeFn();
+    });
+
+    const lbl = document.createElement('span');
+    lbl.className = 'opt-lbl';
+    lbl.textContent = c;
+
+    div.appendChild(cb);
+    div.appendChild(lbl);
+    dd.appendChild(div);
+  });
+
+  const addDiv = document.createElement('div');
+  addDiv.className = 'multi-cat-add';
+  addDiv.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> تصنيف جديد';
+  addDiv.addEventListener('click', (e) => { e.stopPropagation(); openAddCatModal(); });
+  dd.appendChild(addDiv);
+}
+
+function updateMultiCatDisplay(displayId, tagsId, selectedArr) {
+  const tags = document.getElementById(tagsId);
+  tags.innerHTML = '';
+  if (!selectedArr.length) {
+    tags.innerHTML = '<span class="multi-cat-placeholder">اختر تصنيفاً…</span>';
+    return;
+  }
+  selectedArr.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'multi-cat-tag';
+    span.textContent = c;
+    tags.appendChild(span);
+  });
+}
+
+function toggleMultiCatDropdown() {
+  const dd = document.getElementById('multiCatDropdown');
+  const display = document.getElementById('multiCatDisplay');
+  const isOpen = dd.classList.contains('open');
+  closeAllDropdowns();
+  if (!isOpen) {
+    buildMultiCatDropdown('multiCatDropdown', selectedAddCats, () => {
+      updateMultiCatDisplay('multiCatDisplay', 'multiCatTags', selectedAddCats);
+    });
+    dd.classList.add('open');
+    display.classList.add('open');
+  }
+}
+
+function toggleEditMultiCatDropdown() {
+  const dd = document.getElementById('editMultiCatDropdown');
+  const display = document.getElementById('editMultiCatDisplay');
+  const isOpen = dd.classList.contains('open');
+  closeAllDropdowns();
+  if (!isOpen) {
+    buildMultiCatDropdown('editMultiCatDropdown', editSelectedCats, () => {
+      updateMultiCatDisplay('editMultiCatDisplay', 'editMultiCatTags', editSelectedCats);
+    });
+    dd.classList.add('open');
+    display.classList.add('open');
+  }
+}
+
+function closeAllDropdowns() {
+  ['multiCatDropdown','editMultiCatDropdown'].forEach(id => {
+    document.getElementById(id).classList.remove('open');
+  });
+  ['multiCatDisplay','editMultiCatDisplay'].forEach(id => {
+    document.getElementById(id).classList.remove('open');
+  });
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.multi-cat-wrap')) closeAllDropdowns();
+});
+
 // ===================== AUTH UI =====================
-
-// عند اختيار ملف: حاول قراءة اسم المستخدم منه بدون كلمة مرور
-// نحاول فك التشفير بكلمة مرور فارغة للحصول على username فقط إذا كان ممكناً
-// لكن الطريقة الصحيحة: نقرأ الـ JSON ونتحقق من _auth.username
-// المشكلة: الملف مشفر — لا نستطيع قراءة username بدون كلمة المرور
-// الحل: نحفظ اسم المستخدم في حقل عام غير مشفر في الملف (اسم فقط، لا بيانات حساسة)
-// ملاحظة: هذا لا يُضعف الأمان لأن اسم المستخدم وحده لا قيمة له بدون كلمة المرور
-
 async function tryExtractUsername(rawText) {
   if (!rawText) return null;
   const trimmed = rawText.trim();
-  // نجرب أولاً إذا كان الملف يحتوي على حقل username_hint غير مشفر
-  // (هذا الحقل يُضاف للملفات الجديدة)
   try {
-    // بعض الملفات القديمة قد تكون مشفرة فقط بدون hint
-    // نتحقق إذا كان النص يبدأ بـ { (JSON عادي — للتوافق الخلفي)
     if (trimmed.startsWith('{')) {
       const parsed = JSON.parse(trimmed);
       if (parsed._auth && parsed._auth.username) return parsed._auth.username;
     }
-    // الملفات المشفرة: نتحقق من username_hint
     if (trimmed.startsWith(ENC_MARKER + ':')) {
-      // نحاول استخراج username_hint من بداية الملف (نضيفه خارج التشفير)
-      // صيغة جديدة: LA_ENC_V1:BASE64_ENCRYPTED|username_hint:ENCODED_NAME
       const parts = trimmed.split('|username_hint:');
       if (parts.length === 2) {
         try { return decodeURIComponent(escape(atob(parts[1]))); } catch {}
@@ -813,7 +1061,6 @@ async function showLoginStep(filename, rawText, isNewFile) {
   const userInput = document.getElementById('userWrap');
 
   if (isNewFile) {
-    // ملف جديد: لا يوجد مستخدم مسبقاً
     userCard.classList.remove('show');
     userInput.style.display = 'block';
     document.getElementById('passConfirmWrap').style.display = 'block';
@@ -823,7 +1070,6 @@ async function showLoginStep(filename, rawText, isNewFile) {
     document.getElementById('authPassConfirm').value = '';
     setTimeout(() => document.getElementById('authUser').focus(), 120);
   } else {
-    // ملف موجود: نحاول استخراج اسم المستخدم
     document.getElementById('passConfirmWrap').style.display = 'none';
     document.getElementById('authSubmitBtn').innerHTML = '<span class="btn-shine"></span>دخول';
     document.getElementById('authPass').value = '';
@@ -831,33 +1077,31 @@ async function showLoginStep(filename, rawText, isNewFile) {
 
     const detectedName = rawText ? await tryExtractUsername(rawText) : null;
     if (detectedName) {
-      // وجدنا اسم المستخدم — نعرضه ونخفي حقل الإدخال
       document.getElementById('detectedUserName').textContent = detectedName;
       userCard.classList.add('show');
       userInput.style.display = 'none';
       document.getElementById('authUser').value = detectedName;
       setTimeout(() => document.getElementById('authPass').focus(), 120);
     } else {
-      // لم نجد اسم المستخدم — نظهر حقل الإدخال
       userCard.classList.remove('show');
       userInput.style.display = 'block';
       document.getElementById('authUser').value = '';
       setTimeout(() => document.getElementById('authUser').focus(), 120);
     }
   }
-
   document.getElementById('authErr').classList.remove('show');
 }
 
 function goBackToFilePick() {
-  // نظّف الحالة المؤقتة
   pendingFileHandle = null;
   pendingRawText = null;
 
   document.getElementById('loginStep').style.display = 'none';
-  document.getElementById('filePickStep').style.display = 'block';
-  document.getElementById('authErr').classList.remove('show');
   document.getElementById('trialBanner').classList.remove('show');
+  document.getElementById('filePickStep').style.display = 'block';
+  document.getElementById('authActions').style.display = 'flex';
+  document.getElementById('dropZone').style.display = 'block';
+  document.getElementById('authErr').classList.remove('show');
 }
 
 function showAuthError(msg) {
@@ -869,8 +1113,6 @@ function showAuthError(msg) {
 }
 
 // ===================== FILE OPS =====================
-// فتح ملف موجود بـ showOpenFilePicker — يعطي handle كامل للقراءة والكتابة
-// هذه هي الطريقة الوحيدة الموثوقة للحصول على صلاحية الكتابة
 async function openExistingFile() {
   if (!('showOpenFilePicker' in window)) {
     toast('المتصفح لا يدعم هذه الميزة، استخدم Chrome أو Edge'); return;
@@ -880,67 +1122,42 @@ async function openExistingFile() {
       types: [{ description: 'ملف أرشيف الروابط', accept: { 'application/json': ['.json'] } }],
       multiple: false
     });
-    // showOpenFilePicker يعطي handle بصلاحية قراءة — نطلب الكتابة صراحةً
     let perm = await handle.queryPermission({ mode: 'readwrite' });
-    if (perm !== 'granted') {
-      perm = await handle.requestPermission({ mode: 'readwrite' });
-    }
+    if (perm !== 'granted') perm = await handle.requestPermission({ mode: 'readwrite' });
     if (perm !== 'granted') {
       toast('لم تمنح صلاحية الكتابة — الملف سيكون للقراءة فقط ⚠️');
-      // نكمل بقراءة فقط
       const file = await handle.getFile();
       pendingRawText = await file.text();
-      pendingFileHandle = null; // بدون handle = قراءة فقط
+      pendingFileHandle = null;
       await showLoginStep(handle.name, pendingRawText, false);
       return;
     }
     const file = await handle.getFile();
     pendingRawText = await file.text();
-    pendingFileHandle = handle; // handle كامل = قراءة وكتابة
+    pendingFileHandle = handle;
     await showLoginStep(handle.name, pendingRawText, false);
   } catch (e) {
     if (e.name !== 'AbortError') toast('تعذر فتح الملف: ' + (e.message || e));
   }
 }
 
-// السحب والإفلات — يحاول الحصول على handle أيضاً، وإلا يطلب الفتح الرسمي
-// ===================== DROP ZONE (مع صلاحية كتابة كاملة عند النقر) =====================
-    const dropZone = document.getElementById('dropZone');
-    
-    // السحب والإفلات (للقراءة فقط)
-    dropZone.addEventListener('dragover', e => { 
-      e.preventDefault(); 
-      dropZone.classList.add('drag-over'); 
-    });
-    
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-    
-    dropZone.addEventListener('drop', async e => {
-      e.preventDefault(); 
-      dropZone.classList.remove('drag-over');
-      
-      const file = e.dataTransfer.files[0];
-      if (!file || !file.name.endsWith('.json')) { 
-        toast('يجب أن يكون الملف بصيغة JSON'); 
-        return; 
-      }
-    
-      try { 
-        pendingRawText = await file.text(); 
-        pendingFileHandle = null;
-        isReadOnly = true;
-        await showLoginStep(file.name, pendingRawText, false);
-      } catch { 
-        toast('تعذر قراءة الملف'); 
-      }
-    });
-
-// النقر => يفتح File Explorer مع صلاحية readwrite كاملة
-dropZone.addEventListener('click', () => {
-  openExistingFile();
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', async e => {
+  e.preventDefault(); dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (!file || !file.name.endsWith('.json')) { toast('يجب أن يكون الملف بصيغة JSON'); return; }
+  try {
+    pendingRawText = await file.text();
+    pendingFileHandle = null;
+    isReadOnly = true;
+    await showLoginStep(file.name, pendingRawText, false);
+  } catch { toast('تعذر قراءة الملف'); }
 });
-
+dropZone.addEventListener('click', () => openExistingFile());
 dropZone.style.cursor = 'pointer';
+
 async function createNewFile() {
   if (!('showSaveFilePicker' in window)) { toast('المتصفح لا يدعم هذه الميزة، استخدم Chrome أو Edge'); return; }
   try {
@@ -961,10 +1178,8 @@ async function doAuth() {
   const username = (document.getElementById('authUser').value || '').trim();
   const password = document.getElementById('authPass').value || '';
   const passConfirm = document.getElementById('authPassConfirm').value || '';
-
   if (!username) { showAuthError('أدخل اسم المستخدم'); return; }
   if (!password) { showAuthError('أدخل كلمة المرور'); return; }
-
   if (isNew) {
     if (password !== passConfirm) { showAuthError('كلمتا المرور غير متطابقتين'); return; }
     if (password.length < 6) { showAuthError('كلمة المرور 6 أحرف على الأقل'); return; }
@@ -978,14 +1193,12 @@ async function registerNewFile(username, password) {
   showLoading('جاري إنشاء الحساب وتشفير البيانات…');
   try {
     const { hash, salt } = await hashPassword(password);
-    state = { links: [], categories: ['عام', 'مفضلة'] };
+    state = { links: [], categories: ['عام', 'مفضلة'], trash: [] };
     currentAuth = { username, hash, salt };
     sessionPassword = password;
     fileHandle = pendingFileHandle;
     isReadOnly = false;
-
     await writeEncryptedFile();
-
     hideLoading();
     enterApp(username, fileHandle ? fileHandle.name : 'ملف جديد');
   } catch (e) {
@@ -998,26 +1211,19 @@ async function loginToFile(username, password) {
   showLoading('جاري فك التشفير والتحقق…');
   try {
     let rawText = pendingRawText;
-
     if (!rawText && pendingFileHandle) {
       try {
         const file = await pendingFileHandle.getFile();
         rawText = await file.text();
       } catch {
-        hideLoading();
-        showAuthError('تعذر قراءة الملف - حاول مرة أخرى');
-        return;
+        hideLoading(); showAuthError('تعذر قراءة الملف - حاول مرة أخرى'); return;
       }
     }
-
     if (!rawText) { hideLoading(); showAuthError('لا يوجد ملف محدد'); return; }
-
     const trimmed = rawText.trim();
     if (!trimmed.startsWith(ENC_MARKER)) { hideLoading(); showAuthError('الملف غير مشفر أو تالف'); return; }
 
-    // نزيل username_hint من النهاية قبل فك التشفير إذا وُجد
     const encPart = trimmed.split('|username_hint:')[0];
-
     let decrypted;
     try { decrypted = await decryptData(encPart, password); }
     catch { hideLoading(); showAuthError('كلمة المرور خاطئة أو الملف تالف ❌'); return; }
@@ -1030,11 +1236,9 @@ async function loginToFile(username, password) {
     if (!auth || !auth.username || !auth.hash || !auth.salt) {
       hideLoading(); showAuthError('بيانات الملف غير صالحة'); return;
     }
-
     if (auth.username !== username) {
       hideLoading(); showAuthError('اسم المستخدم أو كلمة المرور خاطئة ❌'); return;
     }
-
     const { hash } = await hashPassword(password, auth.salt);
     if (hash !== auth.hash) {
       hideLoading(); showAuthError('اسم المستخدم أو كلمة المرور خاطئة ❌'); return;
@@ -1044,17 +1248,21 @@ async function loginToFile(username, password) {
     state.categories = Array.isArray(parsed.categories) && parsed.categories.length
       ? parsed.categories : ['عام', 'مفضلة'];
     if (!state.categories.includes('عام')) state.categories.unshift('عام');
+    state.trash = Array.isArray(parsed.trash) ? parsed.trash : [];
+
+    // Migrate old single-category links
+    state.links.forEach(l => {
+      if (l.category && !Array.isArray(l.categories)) {
+        l.categories = [l.category];
+      } else if (!l.categories) {
+        l.categories = ['عام'];
+      }
+    });
 
     sessionPassword = password;
     currentAuth = auth;
-
-    if (pendingFileHandle) {
-      fileHandle = pendingFileHandle;
-      isReadOnly = false;
-    } else {
-      fileHandle = null;
-      isReadOnly = true;
-    }
+    if (pendingFileHandle) { fileHandle = pendingFileHandle; isReadOnly = false; }
+    else { fileHandle = null; isReadOnly = true; }
 
     hideLoading();
     enterApp(auth.username, fileHandle ? fileHandle.name : 'ملف محلي (للقراءة فقط)');
@@ -1064,7 +1272,6 @@ async function loginToFile(username, password) {
   }
 }
 
-// كتابة الملف المشفر مع إضافة username_hint خارج التشفير لتسريع تسجيل الدخول
 async function writeEncryptedFile() {
   if (!fileHandle) throw new Error('no_handle');
   if (!sessionPassword) throw new Error('no_password');
@@ -1073,14 +1280,11 @@ async function writeEncryptedFile() {
   const payload = JSON.stringify({
     _auth: currentAuth,
     links: state.links,
-    categories: state.categories
+    categories: state.categories,
+    trash: state.trash
   });
 
-  // تشفير المحتوى
   const encrypted = await encryptData(payload, sessionPassword);
-
-  // إضافة username_hint خارج التشفير (اسم فقط، لا بيانات حساسة)
-  // هذا يتيح عرض اسم المستخدم عند فتح الملف دون كشف أي بيانات حساسة
   const usernameHint = btoa(unescape(encodeURIComponent(currentAuth.username)));
   const finalContent = encrypted + '|username_hint:' + usernameHint;
 
@@ -1095,6 +1299,16 @@ async function writeEncryptedFile() {
   }
 }
 
+function migrateLinks(arr) {
+  arr.forEach(l => {
+    if (l.category && !Array.isArray(l.categories)) {
+      l.categories = [l.category];
+    } else if (!l.categories) {
+      l.categories = ['عام'];
+    }
+  });
+}
+
 function enterApp(username, filename) {
   document.getElementById('authScreen').style.display = 'none';
   document.getElementById('mainHdr').style.display = 'flex';
@@ -1105,11 +1319,10 @@ function enterApp(username, filename) {
   if (!isTrialMode) {
     document.getElementById('settingsBtn').style.display = 'flex';
     document.getElementById('encBadge').style.display = '';
-
     if (isReadOnly) {
       document.getElementById('exportBtn').style.display = 'none';
-      setStatus('', '⚠️ وضع القراءة فقط — فُتح بالسحب والإفلات، التغييرات لن تُحفظ.');
-      toast('تنبيه: وضع القراءة فقط. استخدم ✨ ملف جديد أو افتح الملف بزر "فتح" في المتصفح. ⚠️');
+      setStatus('', '⚠️ وضع القراءة فقط — التغييرات لن تُحفظ.');
+      toast('تنبيه: وضع القراءة فقط ⚠️');
     } else {
       document.getElementById('exportBtn').style.display = 'flex';
       setStatus('ok', '✅ مسجّل الدخول كـ ' + username + ' — محفوظ بتشفير AES-256');
@@ -1117,26 +1330,29 @@ function enterApp(username, filename) {
     }
   }
 
+  migrateLinks(state.links);
+  migrateLinks(state.trash);
+
   applyAllSettings();
   buildSidebar();
   render();
 }
 
 function logout() {
-  // مسح كل شيء من الذاكرة
   sessionPassword = null;
   currentAuth = null;
   fileHandle = null;
   pendingFileHandle = null;
   pendingRawText = null;
-  state = { links: [], categories: ['عام', 'مفضلة'] };
+  state = { links: [], categories: ['عام', 'مفضلة'], trash: [] };
   isTrialMode = false;
   isReadOnly = false;
   activeFilter = 'all';
+  selectedAddCats = [];
+  editSelectedCats = [];
 
-  document.getElementById('authActions').style.display = 'flex'; 
+  document.getElementById('authActions').style.display = 'flex';
   document.getElementById('dropZone').style.display = 'block';
-
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('mainHdr').style.display = 'none';
   document.getElementById('statusBar').style.display = 'none';
@@ -1147,8 +1363,6 @@ function logout() {
   document.getElementById('trialAppWarn').style.display = 'none';
   document.getElementById('exportBtn').style.display = 'none';
   document.getElementById('settingsBtn').style.display = 'none';
-
-  // إعادة شاشة الاختيار
   document.getElementById('loginStep').style.display = 'none';
   document.getElementById('filePickStep').style.display = 'block';
   document.getElementById('trialBanner').classList.remove('show');
@@ -1164,7 +1378,7 @@ function showTrialWarning() {
 function enterTrialMode() {
   isTrialMode = true;
   isReadOnly = false;
-  state = { links: [], categories: ['عام', 'مفضلة'] };
+  state = { links: [], categories: ['عام', 'مفضلة'], trash: [] };
   document.getElementById('authScreen').style.display = 'none';
   document.getElementById('mainHdr').style.display = 'flex';
   document.getElementById('statusBar').style.display = 'flex';
@@ -1173,12 +1387,13 @@ function enterTrialMode() {
   document.getElementById('encBadge').style.display = 'none';
   document.getElementById('trialBadgeHdr').style.display = 'flex';
   document.getElementById('exportBtn').style.display = 'none';
-  document.getElementById('settingsBtn').style.display = 'none';
+  document.getElementById('settingsBtn').style.display = 'flex';
   document.getElementById('trialAppWarn').style.display = 'flex';
   document.getElementById('fileNameLabel').textContent = 'وضع الضيف';
   setStatus('trial', 'وضع الضيف — لا يتم حفظ البيانات');
   applyAllSettings();
-  render(); buildSidebar();
+  buildSidebar();
+  render();
   toast('وضع الضيف — البيانات مؤقتة', 't');
 }
 
@@ -1191,11 +1406,10 @@ function hideLoading() { document.getElementById('loadingOv').classList.remove('
 // ===================== SAVE =====================
 async function saveNow() {
   if (isTrialMode) { toast('وضع الضيف — لا يمكن الحفظ', 't'); return; }
-  if (isReadOnly)   { toast('وضع القراءة فقط — سجّل الخروج وأعد فتح الملف ⚠️'); return; }
+  if (isReadOnly)   { toast('وضع القراءة فقط ⚠️'); return; }
   if (!fileHandle)  { toast('لا يوجد ملف مفتوح ⚠️'); return; }
-  if (!sessionPassword) { toast('انتهت الجلسة — سجّل الخروج وأعد الدخول ⚠️'); return; }
+  if (!sessionPassword) { toast('انتهت الجلسة ⚠️'); return; }
   if (!currentAuth) { toast('بيانات الجلسة مفقودة ⚠️'); return; }
-
   try {
     await writeEncryptedFile();
     toast('تم الحفظ ✅', 'g');
@@ -1223,7 +1437,7 @@ async function exportFile() {
       suggestedName: 'links_backup_' + new Date().toISOString().slice(0, 10) + '.json',
       types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
     });
-    const payload = JSON.stringify({ _auth: currentAuth, links: state.links, categories: state.categories });
+    const payload = JSON.stringify({ _auth: currentAuth, links: state.links, categories: state.categories, trash: state.trash });
     const enc = await encryptData(payload, sessionPassword);
     const usernameHint = btoa(unescape(encodeURIComponent(currentAuth.username)));
     const w = await h.createWritable();
@@ -1233,12 +1447,59 @@ async function exportFile() {
   } catch (e) { if (e.name !== 'AbortError') toast('فشل التصدير: ' + e.message); }
 }
 
+// ===================== TRASH =====================
+function moveToTrash(id) {
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); return; }
+  const idx = state.links.findIndex(l => l.id === id);
+  if (idx === -1) return;
+  const link = state.links.splice(idx, 1)[0];
+  link.deletedAt = Date.now();
+  state.trash.push(link);
+  render(); buildSidebar(); autoSave();
+  toast('نُقل إلى سلة المهملات 🗑️');
+}
+
+function restoreFromTrash(id) {
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); return; }
+  const idx = state.trash.findIndex(l => l.id === id);
+  if (idx === -1) return;
+  const link = state.trash.splice(idx, 1)[0];
+  delete link.deletedAt;
+  state.links.unshift(link);
+  render(); buildSidebar(); autoSave();
+  toast('تمت الاستعادة ✅', 'g');
+}
+
+function permanentDeleteFromTrash(id) {
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); return; }
+  state.trash = state.trash.filter(l => l.id !== id);
+  render(); buildSidebar(); autoSave();
+  toast('تم الحذف النهائي');
+}
+
+function restoreAllTrash() {
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); return; }
+  state.trash.forEach(l => { delete l.deletedAt; state.links.unshift(l); });
+  state.trash = [];
+  activeFilter = 'all';
+  render(); buildSidebar(); autoSave();
+  toast('تمت استعادة الكل ✅', 'g');
+}
+
+function deleteAllTrash() {
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); return; }
+  if (!state.trash.length) return;
+  if (!confirm('هل تريد حذف جميع العناصر في سلة المهملات نهائياً؟ لا يمكن التراجع.')) return;
+  state.trash = [];
+  render(); buildSidebar(); autoSave();
+  toast('تم حذف سلة المهملات نهائياً');
+}
+
 // ===================== APP LOGIC =====================
 function toggleSidebar() { document.body.classList.toggle('sb-hidden'); }
 
 async function addLink() {
-  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط — سجّل الخروج وأعد فتح الملف ⚠️'); return; }
-
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); return; }
   const url = (document.getElementById('urlInput').value || '').trim();
   if (!url) { toast('أدخل رابطاً أولاً'); return; }
 
@@ -1248,22 +1509,23 @@ async function addLink() {
     catch { title = url; }
   }
 
-  const catSelect = document.getElementById('catSelect');
-  const cat = catSelect.value || (state.categories[0] || 'عام');
+  const cats = selectedAddCats.length ? [...selectedAddCats] : [state.categories[0] || 'عام'];
   const notes = (document.getElementById('notesInput').value || '').trim();
 
-  state.links.unshift({ id: Date.now(), url, title, category: cat, notes });
+  state.links.unshift({ id: Date.now(), url, title, categories: cats, notes });
   document.getElementById('urlInput').value = '';
   document.getElementById('titleInput').value = '';
   document.getElementById('notesInput').value = '';
+  selectedAddCats = [];
+  updateMultiCatDisplay('multiCatDisplay', 'multiCatTags', selectedAddCats);
   render(); buildSidebar(); autoSave();
   toast('تمت الإضافة ✅', 'g');
 }
 
-function deleteLink(id) {
-  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط — سجّل الخروج وأعد فتح الملف ⚠️'); return; }
-  state.links = state.links.filter(l => l.id !== id);
-  render(); buildSidebar(); autoSave(); toast('تم الحذف');
+function copyToClipboard(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    toast('تم نسخ الرابط بنجاح ✅', 'g');
+  }).catch(() => toast('فشل النسخ ❌'));
 }
 
 function openEditModal(id) {
@@ -1273,17 +1535,19 @@ function openEditModal(id) {
   document.getElementById('editTitle').value = l.title || '';
   document.getElementById('editUrl').value = l.url || '';
   document.getElementById('editNotes').value = l.notes || '';
-  const sel = document.getElementById('editCat');
-  sel.innerHTML = state.categories.map(c =>
-    `<option value="${esc(c)}"${c === l.category ? ' selected' : ''}>${esc(c)}</option>`
-  ).join('');
+  editSelectedCats = [...(l.categories || (l.category ? [l.category] : ['عام']))];
+  updateMultiCatDisplay('editMultiCatDisplay', 'editMultiCatTags', editSelectedCats);
   document.getElementById('editModal').classList.add('open');
 }
 
-function closeEditModal() { document.getElementById('editModal').classList.remove('open'); editingId = null; }
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editingId = null;
+  closeAllDropdowns();
+}
 
 function saveEdit() {
-  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط — سجّل الخروج وأعد فتح الملف ⚠️'); closeEditModal(); return; }
+  if (isReadOnly && !isTrialMode) { toast('وضع القراءة فقط ⚠️'); closeEditModal(); return; }
   if (!editingId) return;
   const l = state.links.find(x => x.id === editingId);
   if (!l) return;
@@ -1291,17 +1555,10 @@ function saveEdit() {
   const newUrl   = (document.getElementById('editUrl').value || '').trim();
   if (newTitle) l.title = newTitle;
   if (newUrl)   l.url   = newUrl;
-  l.category = document.getElementById('editCat').value || l.category;
-  l.notes    = (document.getElementById('editNotes').value || '').trim();
+  l.categories = editSelectedCats.length ? [...editSelectedCats] : [state.categories[0] || 'عام'];
+  l.notes = (document.getElementById('editNotes').value || '').trim();
   closeEditModal(); render(); buildSidebar(); autoSave();
   toast('تم التعديل ✅', 'g');
-}
-
-function onCatChange(sel) {
-  if (sel.value === '__NEW__') {
-    openAddCatModal();
-    sel.value = state.categories[0] || 'عام';
-  }
 }
 
 function openAddCatModal() {
@@ -1325,17 +1582,29 @@ function closeCatModal() { document.getElementById('catModal').classList.remove(
 function confirmCatModal() {
   const name = (document.getElementById('newCatName').value || '').trim();
   if (!name) return;
-
   if (catModalMode === 'add') {
     if (state.categories.includes(name)) { toast('التصنيف موجود مسبقاً'); return; }
     state.categories.push(name);
-    closeCatModal(); buildCatDropdown();
-    document.getElementById('catSelect').value = name;
+    if (!selectedAddCats.includes(name)) selectedAddCats.push(name);
+    closeCatModal();
+    buildSidebar();
+    updateMultiCatDisplay('multiCatDisplay', 'multiCatTags', selectedAddCats);
   } else {
     if (name !== editingCatName && state.categories.includes(name)) { toast('الاسم مستخدم مسبقاً'); return; }
     const idx = state.categories.indexOf(editingCatName);
     if (idx > -1) state.categories[idx] = name;
-    state.links.forEach(l => { if (l.category === editingCatName) l.category = name; });
+    state.links.forEach(l => {
+      if (l.categories) {
+        const i = l.categories.indexOf(editingCatName);
+        if (i > -1) l.categories[i] = name;
+      }
+    });
+    state.trash.forEach(l => {
+      if (l.categories) {
+        const i = l.categories.indexOf(editingCatName);
+        if (i > -1) l.categories[i] = name;
+      }
+    });
     if (activeFilter === editingCatName) activeFilter = name;
     closeCatModal(); render(); buildSidebar();
     toast('تم تعديل التصنيف ✅', 'g');
@@ -1345,12 +1614,12 @@ function confirmCatModal() {
 
 function openDelCatModal(name) {
   deleteCatTarget = name;
-  const count = state.links.filter(l => l.category === name).length;
+  const count = state.links.filter(l => (l.categories || []).includes(name)).length;
   document.getElementById('delCatBody').innerHTML = `سيتم حذف تصنيف <strong>${esc(name)}</strong> بشكل نهائي.`;
   const info = document.getElementById('delCatInfo');
   if (count > 0) {
     info.style.display = 'flex';
-    document.getElementById('delCatInfoTxt').textContent = `يوجد ${count} رابط في هذا التصنيف، سيتم نقلهم إلى "عام".`;
+    document.getElementById('delCatInfoTxt').textContent = `يوجد ${count} رابط في هذا التصنيف، سيتم إزالته منها.`;
   } else {
     info.style.display = 'none';
   }
@@ -1360,7 +1629,12 @@ function closeDelCatModal() { document.getElementById('delCatModal').classList.r
 
 function confirmDelCat() {
   if (!deleteCatTarget) return;
-  state.links.forEach(l => { if (l.category === deleteCatTarget) l.category = 'عام'; });
+  state.links.forEach(l => {
+    if (l.categories) {
+      l.categories = l.categories.filter(c => c !== deleteCatTarget);
+      if (!l.categories.length) l.categories = ['عام'];
+    }
+  });
   state.categories = state.categories.filter(c => c !== deleteCatTarget);
   if (!state.categories.includes('عام')) state.categories.unshift('عام');
   if (activeFilter === deleteCatTarget) activeFilter = 'all';
@@ -1368,23 +1642,19 @@ function confirmDelCat() {
   toast('تم حذف التصنيف');
 }
 
-function buildCatDropdown() {
-  const sel = document.getElementById('catSelect');
-  if (!sel) return;
-  const cur = sel.value;
-  sel.innerHTML = state.categories.map(c =>
-    `<option value="${esc(c)}">${esc(c)}</option>`
-  ).join('') + `<option value="__NEW__">+ تصنيف جديد</option>`;
-  if (state.categories.includes(cur)) sel.value = cur;
-}
-
+// FIX 5: buildSidebar — إضافة catList.innerHTML = '' في البداية
 function buildSidebar() {
-  buildCatDropdown();
   const counts = {};
-  state.links.forEach(l => { counts[l.category] = (counts[l.category] || 0) + 1; });
+  state.links.forEach(l => {
+    (l.categories || ['عام']).forEach(c => {
+      counts[c] = (counts[c] || 0) + 1;
+    });
+  });
 
   const catList = document.getElementById('catList');
+  catList.innerHTML = ''; // مسح المحتوى القديم أولاً
 
+  // "الكل"
   const allRow = document.createElement('div');
   allRow.className = 'cat-row' + (activeFilter === 'all' ? ' active' : '');
   const allBtn = document.createElement('button');
@@ -1392,13 +1662,12 @@ function buildSidebar() {
   allBtn.innerHTML = `<span class="lbl">الكل</span><span class="cnt">${state.links.length}</span>`;
   allBtn.addEventListener('click', () => setFilter('all'));
   allRow.appendChild(allBtn);
+  catList.appendChild(allRow);
 
-  const rows = [allRow];
-
+  // التصنيفات
   state.categories.forEach(c => {
     const row = document.createElement('div');
     row.className = 'cat-row' + (activeFilter === c ? ' active' : '');
-
     const btn = document.createElement('button');
     btn.className = 'cat-btn';
     btn.innerHTML = `<span class="lbl">${esc(c)}</span><span class="cnt">${counts[c] || 0}</span>`;
@@ -1423,37 +1692,113 @@ function buildSidebar() {
     acts.appendChild(delBtn);
     row.appendChild(btn);
     row.appendChild(acts);
-    rows.push(row);
+    catList.appendChild(row);
   });
 
-  catList.innerHTML = '';
-  rows.forEach(r => catList.appendChild(r));
+  // فاصل
+  const sep = document.createElement('div');
+  sep.style.cssText = 'height:1px;background:var(--line);margin:4px 14px;';
+  catList.appendChild(sep);
+
+  // سلة المهملات
+  const trashRow = document.createElement('div');
+  trashRow.className = 'cat-row trash-row' + (activeFilter === '__TRASH__' ? ' active' : '');
+  const trashBtn = document.createElement('button');
+  trashBtn.className = 'cat-btn';
+  trashBtn.innerHTML = `<span class="lbl">🗑️ سلة المهملات</span><span class="cnt">${state.trash.length}</span>`;
+  trashBtn.addEventListener('click', () => setFilter('__TRASH__'));
+  trashRow.appendChild(trashBtn);
+  catList.appendChild(trashRow);
 
   document.getElementById('sbFoot').textContent = `${state.links.length} رابط · ${state.categories.length} تصنيف`;
 }
 
-function setFilter(cat) { activeFilter = cat; buildSidebar(); render(); }
+function setFilter(cat) {
+  activeFilter = cat;
+  const addCard = document.getElementById('addCard');
+  const trashToolbar = document.getElementById('trashToolbar');
+  if (cat === '__TRASH__') {
+    addCard.style.display = 'none';
+    trashToolbar.classList.add('show');
+  } else {
+    addCard.style.display = 'block';
+    trashToolbar.classList.remove('show');
+  }
+  buildSidebar();
+  render();
+}
 
 function render() {
   const q = (document.getElementById('searchInput').value || '').toLowerCase();
-  const filtered = state.links.filter(l =>
-    (activeFilter === 'all' || l.category === activeFilter) &&
-    (!q || (l.title || '').toLowerCase().includes(q) || (l.url || '').toLowerCase().includes(q) ||
-      (l.category || '').toLowerCase().includes(q) || (l.notes || '').toLowerCase().includes(q))
-  );
+  const isTrash = activeFilter === '__TRASH__';
+  const source = isTrash ? state.trash : state.links;
+
+  const filtered = source.filter(l => {
+    const cats = l.categories || ['عام'];
+    const matchFilter = isTrash || activeFilter === 'all' || cats.includes(activeFilter);
+    const matchSearch = !q ||
+      (l.title || '').toLowerCase().includes(q) ||
+      (l.url || '').toLowerCase().includes(q) ||
+      (cats.join(' ')).toLowerCase().includes(q) ||
+      (l.notes || '').toLowerCase().includes(q);
+    return matchFilter && matchSearch;
+  });
 
   document.getElementById('rmeta').innerHTML = filtered.length
-    ? `عرض <strong>${filtered.length}</strong> رابط${activeFilter !== 'all' ? ' في "' + esc(activeFilter) + '"' : ''}`
+    ? `عرض <strong>${filtered.length}</strong> رابط${activeFilter !== 'all' && activeFilter !== '__TRASH__' ? ' في "' + esc(activeFilter) + '"' : ''}`
     : '';
 
   const grid = document.getElementById('grid');
   if (!filtered.length) {
-    grid.innerHTML = `<div class="empty"><div class="eico">🔍</div><h3>${state.links.length ? 'لا توجد نتائج' : 'لا توجد روابط بعد'}</h3><p>${state.links.length ? 'جرب كلمة بحث مختلفة' : 'أضف أول رابط من النموذج أعلاه'}</p></div>`;
+    const emptyIcon = isTrash ? '🗑️' : '🔍';
+    const emptyTitle = isTrash ? 'سلة المهملات فارغة' : (source.length ? 'لا توجد نتائج' : 'لا توجد روابط بعد');
+    const emptyDesc = isTrash ? 'الروابط المحذوفة ستظهر هنا' : (source.length ? 'جرب كلمة بحث مختلفة' : 'أضف أول رابط من النموذج أعلاه');
+    grid.innerHTML = `<div class="empty"><div class="eico">${emptyIcon}</div><h3>${emptyTitle}</h3><p>${emptyDesc}</p></div>`;
     return;
   }
 
+  if (isTrash) {
+    let html = '';
+    filtered.forEach(l => {
+      let domain = '';
+      try { domain = new URL(l.url).hostname; } catch {}
+      const fav = domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32` : '';
+      const catsHtml = (l.categories || ['عام']).map(c => `<span class="lcat-tag">${esc(c)}</span>`).join('');
+      const deletedDate = l.deletedAt ? new Date(l.deletedAt).toLocaleDateString('ar') : '';
+      html += `<div class="lcard trash-card">
+        <div class="lcard-top">
+          <div class="fav">${fav ? `<img src="${esc(fav)}" loading="lazy" onerror="this.style.display='none'">` : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`}</div>
+          <div class="linfo">
+            <div class="ltitle">${esc(l.title || l.url)}</div>
+            <span class="lurl" style="color:var(--muted);font-size:.7rem;">${esc(domain || l.url)}${deletedDate ? ' · ' + deletedDate : ''}</span>
+          </div>
+          <div class="lacts">
+            <button class="ibtn restore-btn" onclick="restoreFromTrash(${l.id})" title="استعادة">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+            </button>
+            <button class="ibtn del" onclick="permanentDeleteFromTrash(${l.id})" title="حذف نهائي">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/><path d="M10,11v6M14,11v6"/><path d="M9,6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+        ${catsHtml ? `<div class="lcats">${catsHtml}</div>` : ''}
+        ${l.notes ? `<div class="lnotes">${esc(l.notes)}</div>` : ''}
+      </div>`;
+    });
+    grid.innerHTML = html;
+    return;
+  }
+
+  // عرض عادي مع تجميع
   const grouped = {};
-  filtered.forEach(l => { (grouped[l.category] = grouped[l.category] || []).push(l); });
+  if (activeFilter === 'all') {
+    filtered.forEach(l => {
+      const firstCat = (l.categories && l.categories.length) ? l.categories[0] : 'عام';
+      (grouped[firstCat] = grouped[firstCat] || []).push(l);
+    });
+  } else {
+    grouped[activeFilter] = filtered;
+  }
 
   let html = '';
   for (const cat in grouped) {
@@ -1462,28 +1807,31 @@ function render() {
       let domain = '';
       try { domain = new URL(l.url).hostname; } catch {}
       const fav = domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32` : '';
+      const cats = l.categories || ['عام'];
+      const catsHtml = cats.length > 1 ? cats.map(c => `<span class="lcat-tag">${esc(c)}</span>`).join('') : '';
       html += `<div class="lcard">
         <div class="lcard-top">
-          <div class="fav">${fav
-            ? `<img src="${esc(fav)}" loading="lazy" onerror="this.style.display='none'">`
-            : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`
-          }</div>
+          <div class="fav">${fav ? `<img src="${esc(fav)}" loading="lazy" onerror="this.style.display='none'">` : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`}</div>
           <div class="linfo">
             <div class="ltitle">${esc(l.title || l.url)}</div>
             <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" class="lurl">${esc(domain || l.url)}</a>
           </div>
           <div class="lacts">
+            <button class="ibtn del" onclick="moveToTrash(${l.id})" title="نقل للمهملات">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/><path d="M10,11v6M14,11v6"/><path d="M9,6V4h6v2"/></svg>
+            </button>
             <a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" class="ibtn" title="فتح">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
             <button class="ibtn" onclick="openEditModal(${l.id})" title="تعديل">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </button>
-            <button class="ibtn del" onclick="deleteLink(${l.id})" title="حذف">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3,6 5,6 21,6"/><path d="M19,6l-1,14H6L5,6"/><path d="M10,11v6M14,11v6"/><path d="M9,6V4h6v2"/></svg>
+            <button class="ibtn" onclick="copyToClipboard('${esc(l.url)}')" title="نسخ الرابط">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             </button>
           </div>
         </div>
+        ${catsHtml ? `<div class="lcats">${catsHtml}</div>` : ''}
         ${l.notes ? `<div class="lnotes">${esc(l.notes)}</div>` : ''}
       </div>`;
     });
@@ -1520,7 +1868,7 @@ document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key === 's') {
     e.preventDefault();
     if (isTrialMode) { toast('وضع الضيف — لا يمكن الحفظ', 't'); return; }
-    if (isReadOnly)  { toast('وضع القراءة فقط — سجّل الخروج وأعد فتح الملف ⚠️'); return; }
+    if (isReadOnly)  { toast('وضع القراءة فقط ⚠️'); return; }
     if (canSave()) saveNow();
     else toast('لا يوجد ملف مفتوح ⚠️');
   }
@@ -1528,12 +1876,12 @@ document.addEventListener('keydown', e => {
     ['catModal', 'editModal', 'delCatModal', 'settingsModal'].forEach(id => {
       document.getElementById(id).classList.remove('open');
     });
+    closeAllDropdowns();
   }
 });
 
 document.getElementById('urlInput').addEventListener('keydown', e => { if (e.key === 'Enter') addLink(); });
 
-// إغلاق المودال عند النقر على الخلفية
 ['settingsModal', 'catModal', 'delCatModal', 'editModal'].forEach(id => {
   const el = document.getElementById(id);
   el.addEventListener('click', function(e) {
