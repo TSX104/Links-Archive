@@ -925,6 +925,7 @@ function navigateCategories(direction) {
 function navigateCategories(dir){const nl=['all',...state.categories,'__TRASH__'];let ci=nl.indexOf(activeFilter)+dir;if(ci>=0&&ci<nl.length){setFilter(nl[ci]);setTimeout(()=>{const ar=document.querySelector('.cat-row.active');if(ar)ar.scrollIntoView({block:'nearest',behavior:'smooth'});},50);}}
 ['settingsModal','catModal','delCatModal','editModal','shortcutsModal','mediaLibraryModal','mediaOptionsModal'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});});
 // ===================== INIT =====================
+if (!window.showOpenFilePicker) { toast("عذراً، متصفحك لا يدعم تقنيات التعامل مع الملفات المطلوبة. يرجى استخدام Chrome أو Edge."); }
 loadSettings();
 renderMediaGrid('add');
 renderThumbPreview('add');
